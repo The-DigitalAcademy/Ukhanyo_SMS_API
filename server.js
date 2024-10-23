@@ -14,7 +14,6 @@ app.use((_req, res, next) => {
 
 app.use(express.json());
 
-// database connection
 
 app.get("/", (_req, res) => {
   res.send("The Api is running!");
