@@ -1,4 +1,4 @@
-const PastPaper = require('../models/past_paper');
+const PastPaper = require('../models/past_paper')
 
 exports.createPaper = async (req, res) => {
   try {
