@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const {connectionString} = require('./src/config/db_config');
 const port = 3300;
 const app = express();
+const pastPaperRoutes = require('./src/routes/past_paper_routes')
 
 
 app.use(cors())
@@ -31,7 +32,7 @@ db.once("open", () => {
 app.get("/", (_req, res) => {
   res.send("The Api is running!");
 });
-
+app.use('/api', pastPaperRoutes)
 app.listen(port, () => {
   console.log(`The server is running on ${port}`);
 });
