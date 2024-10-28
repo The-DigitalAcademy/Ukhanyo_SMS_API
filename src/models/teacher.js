@@ -20,6 +20,6 @@ const teacherSchema = new mongoose.Schema({
 
 const Teacher = mongoose.model('admin', teacherSchema);
 
-Teacher.insertMany([{name:"Ms Mary Sobekwa",description:"Teaches grade 11& 12 pupils. Specializes in Mathematics and Life Sciences."}])
+// Teacher.insertMany([{name:"Ms Mary Sobekwa",description:"Teaches grade 11& 12 pupils. Specializes in Mathematics and Life Sciences."}])
 
 module.exports = Teacher;
