@@ -4,7 +4,10 @@ const mongoose = require("mongoose");
 const {connectionString} = require('./src/config/db_config');
 const port = 3300;
 const app = express();
-const pastPaperRoutes = require('./src/routes/past_paper_routes')
+const pastPaperRoutes = require('./src/routes/past_paper_routes');
+const adminRoutes = require('./src/routes/admin_routes');
+const studentRoutes = require('./src/routes/student_routes')
+const teacherRoutes = require('./src/routes/teacher_routes')
 
 
 app.use(cors())
