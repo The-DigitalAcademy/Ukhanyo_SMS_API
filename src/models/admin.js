@@ -28,7 +28,7 @@ const adminSchema = new mongoose.Schema({
 // },
 });
 
-const Admin = mongoose.model('Quiz', adminSchema);
+const Admin = mongoose.model('Admin', adminSchema);
 
 // Quiz.insertMany([{name:"Asekona Mali",age:"18", gender:"Female", interest:"Medicine", gpa:"3.0", country:"South Africa"}])
 

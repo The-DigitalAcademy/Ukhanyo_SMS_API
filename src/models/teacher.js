@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const educatorSchema = new mongoose.Schema({
+const teacherSchema = new mongoose.Schema({
   name: {
     type: String,
     
@@ -18,8 +18,8 @@ const educatorSchema = new mongoose.Schema({
 
 });
 
-const Educator = mongoose.model('admin', educatorSchema);
+const Teacher = mongoose.model('admin', teacherSchema);
 
-// Educator.insertMany([{name:"Ms Mary Sobekwa",description:"Teaches grade 11& 12 pupils. Specializes in Mathematics and Life Sciences."}])
+Teacher.insertMany([{name:"Ms Mary Sobekwa",description:"Teaches grade 11& 12 pupils. Specializes in Mathematics and Life Sciences."}])
 
-module.exports = Educator;
+module.exports = Teacher;
