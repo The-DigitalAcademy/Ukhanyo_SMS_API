@@ -1,4 +1,4 @@
-const User = require("../models/enrollment_model");
+const User = require("../models/admin");
 
 exports.createUser = async (req, res) => {
   try {
