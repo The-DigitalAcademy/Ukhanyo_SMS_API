@@ -29,10 +29,10 @@ db.once("open", () => {
 });
 
 
-app.get("/", (_req, res) => {
-  res.send("The Api is running!");
-});
-app.use('/api', pastPaperRoutes)
+// app.get("/", (_req, res) => {
+//   res.send("The Api is running!");
+// });
+app.use('/api/past-papers', pastPaperRoutes)
 app.listen(port, () => {
   console.log(`The server is running on ${port}`);
 });
