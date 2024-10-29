@@ -20,16 +20,10 @@ app.use((_req, res, next) => {
 
 app.use(express.json());
 
-// console.log(connectionString.url)
-
-mongoose.connect(connectionString.url);
-
-const db = mongoose.connection;
-
-db.on("error", console.error.bind(console, "MongoDB connection error:"));
-db.once("open", () => {
-  console.log("Connected to MongoDB");
-});
+mongoose.connect(connectionString.url)
+  .then(()=> console.log("Connected to db"))
+  .catch((error)=> console.error('Some error occured while trying to connect to DB', error.errmsg) )
+;
 
 
 app.get("/", (_req, res) => {
