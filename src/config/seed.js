@@ -152,6 +152,6 @@ const seedDatabase = async () => {
     }
 };
 
-seedDatabase();
+// seedDatabase();
 
 module.exports = seedDatabase;

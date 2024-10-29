@@ -7,5 +7,9 @@ const gradeSchema = new Schema({
     mark: { type: Number, required: true },
     maxMark: { type: Number, required: true }
 });
-
+gradeSchema.method("toJSON", function() {
+    const { __v, _id, ...object } = this.toObject();
+    object.id = _id;
+    return object;
+  });
 module.exports = mongoose.model('Grades', gradeSchema);

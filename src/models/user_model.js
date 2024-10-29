@@ -8,4 +8,10 @@ const userSchema = new Schema({
     role: { type: String, enum: ['admin', 'teacher', 'student'], required: true },
 }, { timestamps: true });
 
+userSchema.method("toJSON", function() {
+    const { __v, _id, ...object } = this.toObject();
+    object.id = _id;
+    return object;
+  });
+  
 module.exports = mongoose.model('User', userSchema);

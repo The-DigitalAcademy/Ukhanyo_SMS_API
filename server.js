@@ -7,7 +7,7 @@ const app = express();
 const pastPaperRoutes = require('./src/routes/past_paper_routes');
 const adminRoutes = require('./src/routes/admin_routes');
 const studentRoutes = require('./src/routes/student_routes')
-const teacherRoutes = require('./src/routes/teacher_routes')
+const teacherRoutes = require('./src/routes/teacher_routes');
 
 
 app.use(cors())
@@ -31,9 +31,10 @@ app.get("/", (_req, res) => {
 });
 
 app.use('/api', pastPaperRoutes);
-app.use('/api', adminRoutes);
-app.use('/api', studentRoutes);
-app.use('/api', teacherRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/students', studentRoutes);
+app.use('/api/teachers', teacherRoutes);
+
 
 
 app.listen(port, () => {

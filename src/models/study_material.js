@@ -9,5 +9,9 @@ const studyMaterialSchema = new Schema({
     uploadedBy: { type: Schema.Types.ObjectId, ref: 'Teacher', required: true },
     dateUploaded: { type: Date, default: Date.now }
 });
-
+studyMaterialSchema.method("toJSON", function() {
+    const { __v, _id, ...object } = this.toObject();
+    object.id = _id;
+    return object;
+  });
 module.exports = mongoose.model('StudyMaterial', studyMaterialSchema);

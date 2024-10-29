@@ -9,4 +9,10 @@ const announcementSchema = new Schema({
     createdBy: { type: Schema.Types.ObjectId, ref: 'Teacher', required: true } // figure out how to do multiple ref
 });
 
+announcementSchema.method("toJSON", function() {
+  const { __v, _id, ...object } = this.toObject();
+  object.id = _id;
+  return object;
+});
+
 module.exports = mongoose.model('Announcement', announcementSchema);

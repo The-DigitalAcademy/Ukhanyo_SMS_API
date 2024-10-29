@@ -6,8 +6,8 @@ router.post("/add", teacherController.createTeacher);
 
 router.get("/get-all", teacherController.getAllTeachers);
 
-router.get("/get-one/:id", teacherController.getTeacher);
+router.get("/get-one/:id", teacherController.getTeacherById);
 
-router.put("/update/:id", teacherController.updateTeacher);
+// router.put("/update/:id", teacherController.); 
 
 module.exports = router;
