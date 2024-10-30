@@ -25,6 +25,7 @@ exports.createTeacher = async (req, res) => {
 
 exports.getAllTeachers = async (req, res) => {
     try {
+      
         const teachers = await Teacher.find().populate('user').populate('classes');
         res.status(200).json(teachers);
     } catch (err) {
@@ -35,7 +36,10 @@ exports.getAllTeachers = async (req, res) => {
 
 exports.getTeacherById = async (req, res) => {
     try {
-        const { teacherId } = req.params;
+        const teacherId  = req.params.id
+
+        console.log("Req dot params",teacherId)
+
         const teacher = await Teacher.findById(teacherId).populate('user').populate('classes');
         
         if (!teacher) return res.status(404).json({ message: 'Teacher not found' });

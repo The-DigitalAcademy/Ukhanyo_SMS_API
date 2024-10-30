@@ -59,13 +59,13 @@ const seedDatabase = async () => {
         ]);
 
         const teachers = await Teacher.insertMany([
-            { user: users[0]._id, classes: [] },
-            { user: users[1]._id, classes: [] }
+            { user: users[0].id, classes: [] },
+            { user: users[1].id, classes: [] }
         ]);
         
         const students = await Student.insertMany([
-            { user: users[2]._id, enrolledClasses: [] },
-            { user: users[3]._id, enrolledClasses: [] }
+            { user: users[2].id, enrolledClasses: [] },
+            { user: users[3].id, enrolledClasses: [] }
         ]);
         
 

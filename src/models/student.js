@@ -7,5 +7,10 @@ const studentSchema = new Schema({
     serviceRequests: [{ type: Schema.Types.ObjectId, ref: 'ServiceRequest' }],
     // Other student-specific fields like marks or attendance could be added separately
 });
+studentSchema.method("toJSON", function() {
+    const { __v, _id, ...object } = this.toObject();
+    object.id = _id;
+    return object;
+  });
 
 module.exports = mongoose.model('Student', studentSchema);

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const adminController = require("../controllers/admin_controller");
 
-router.post("/user", adminController.createUser);
+router.post("/add-user", adminController.createUser);
 
 router.get("/get-all", adminController.getAllUsers);
 

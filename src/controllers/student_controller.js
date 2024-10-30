@@ -12,7 +12,7 @@ exports.createStudent = async (req, res) => {
 
 exports.getAllStudents = async (req, res) => {
   try {
-    const students = await Student.find();
+    const students = await Student.find().populate();
     res.send(students);
   } catch (error) {
     res
@@ -21,10 +21,11 @@ exports.getAllStudents = async (req, res) => {
   }
 };
 
+
 exports.getOneStudent = async (req, res) => {
   try {
     const { id } = req.params;
-    const student = await Student.findById(id);
+    const student = await Student.findById(id).populate("user");
     if (!student) {
       return res.status(404).send({ message: "Student not found" });
     }
