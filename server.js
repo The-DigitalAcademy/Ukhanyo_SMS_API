@@ -9,6 +9,7 @@ const adminRoutes = require('./src/routes/admin_routes');
 const studentRoutes = require('./src/routes/student_routes')
 const teacherRoutes = require('./src/routes/teacher_routes');
 const seedDatabase = require("./src/config/seed");
+const service_request = require("./src/routes/service_req");
 
 
 app.use(cors())
@@ -43,6 +44,7 @@ app.use('/api/pastpaper', pastPaperRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/student', studentRoutes);
 app.use('/api/teacher', teacherRoutes);
+app.use('/api/service_req', service_request)
 
 
 

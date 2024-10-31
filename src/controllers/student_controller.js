@@ -29,6 +29,7 @@ exports.getOneStudent = async (req, res) => {
     if (!student) {
       return res.status(404).send({ message: "Student not found" });
     }
+    student.dob = student.user.dob.toISOString().split('T')[0];
     res.json(student);
   } catch (error) {
     res

@@ -4,7 +4,7 @@ exports.createUser = async (req, res) => {
   try {
     const newUser = new User(req.body);
     const savedUser = await newUser.save();
-    res.json(savedUser);
+    res.json({message:"Created user succeffully", savedUser});
   } catch (error) {
     res.json({ message: error.message });
   }
@@ -26,6 +26,8 @@ exports.getOneUser = async (req, res) => {
     const { id } = req.params;
     const user = await User.findById(id);
     if (!user) {
+      user.dob = user.dob.toISOString().split('T')[0];
+
       return res.status(404).send({ message: "User not found" });
     }
     res.json(user);

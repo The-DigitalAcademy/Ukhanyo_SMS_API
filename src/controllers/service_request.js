@@ -69,7 +69,7 @@ exports.updateServiceRequestStatus = async (req, res) => {
 
 exports.deleteServiceRequest = async (req, res) => {
     try {
-        const { requestId } = req.params;
+        const requestId = req.params.id;
 
         const deletedRequest = await ServiceRequest.findByIdAndDelete(requestId);
         if (!deletedRequest) return res.status(404).json({ message: 'Service request not found' });
