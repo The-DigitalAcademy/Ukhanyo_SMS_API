@@ -9,7 +9,6 @@ const userSchema = new Schema({
     dob: {  type: Date, require: true},
     id_number: { type: String, required: true, unique: true, index: true, match: /^[0-9]{13}$/,},
     address: {
-      house_no: { type: String, require: true },
       street: { type: String, require: true  },
       surbub: { type: String, require: true },
       city: { type: String, require: true },

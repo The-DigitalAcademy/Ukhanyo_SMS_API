@@ -11,6 +11,7 @@ const subjectSchema = new Schema({
     events: [{ type: Schema.Types.ObjectId, ref: "Event" }],
     marks: [{ type: Schema.Types.ObjectId, ref: "Mark" }],
     attendance: [{ type: Schema.Types.ObjectId, ref: "Attendance" }],
+    
 });
 
 courseSchema.method("toJSON", function() {

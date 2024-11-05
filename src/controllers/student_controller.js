@@ -12,7 +12,7 @@ exports.createStudent = async (req, res) => {
 
 exports.getAllStudents = async (req, res) => {
   try {
-    const students = await Student.find().populate();
+    const students = await Student.find().populate('user');
     res.send(students);
   } catch (error) {
     res
