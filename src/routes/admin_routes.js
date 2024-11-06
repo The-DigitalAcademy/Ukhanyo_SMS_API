@@ -6,7 +6,7 @@ router.post("/add-user", adminController.createUser);
 
 router.get("/get-all", adminController.getAllUsers);
 
-router.get("/get-one/:id", adminController.getOneUser);
+router.get("/user/:uuid", adminController.getOneUser);
 
 router.delete("/delete-all", adminController.deleteAllUsers);
 

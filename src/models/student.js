@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const studentSchema = new Schema({
     user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    enrolledClasses: [{ type: Schema.Types.ObjectId, ref: 'Course' }], // Link to classes
+    enrolledClasses: [{ type: Schema.Types.ObjectId, ref: 'Subject' }], // Link to classes
     serviceRequests: [{ type: Schema.Types.ObjectId, ref: 'ServiceRequest' }],
     student_number: { type: String, unique: true },
     // Other student-specific fields like marks or attendance could be added separately

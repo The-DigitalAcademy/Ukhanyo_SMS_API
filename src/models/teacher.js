@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const teacherSchema = new Schema({
-    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    classes: [{type: Schema.Types.ObjectId, ref: 'Course', required: true}],
+    user: { type: Schema.Types.String, ref: 'User', required: true },
+    classes: [{type: Schema.Types.ObjectId, ref: 'Subject'}],
     hireDate: { type: Date, default: Date.now },
 });
 

@@ -5,12 +5,7 @@ exports.createUser = async (req, res) => {
     try {
         const { name, email, password, role } = req.body;
 
-        const user = new User({
-            name,
-            email,
-            password,
-            role
-        });
+        const user = new User({...req.body});
 
         await user.save();
         res.status(201).json(user);

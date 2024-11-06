@@ -9,7 +9,7 @@ exports.createCourse = async (req, res) => {
     try {
         const { name, teacherId, studentIds } = req.body;
 
-        const teacher = await Teacher.findById(teacherId);
+        const teacher = await Teacher.findOne(teacherId);
         if (!teacher) return res.status(404).json({ message: 'Teacher not found' });
 
         const course = new Course({

@@ -1,18 +1,22 @@
 const Teacher = require('../models/teacher');
 const Course = require('../models/course');
 const User = require('../models/user_model');
+const Subject = require('../models/subject');
 
 
 exports.createTeacher = async (req, res) => {
     try {
-        const { userId, courses } = req.body;
+        const { uuid, subject } = req.body;
 
-        const user = await User.findById(userId);
+        const user = await User.findOne({uuid});
         if (!user) return res.status(404).json({ message: 'User not found' });
 
+        // const subject = await Subject.findOne({subjectCode})
+        // console.log(subject)
+
         const teacher = new Teacher({
-            user: userId,
-            classes: courses
+            user: user.id,
+            classes: subject
         });
 
         await teacher.save();
@@ -38,9 +42,7 @@ exports.getTeacherById = async (req, res) => {
     try {
         const teacherId  = req.params.id
 
-        console.log("Req dot params",teacherId)
-
-        const teacher = await Teacher.findById(teacherId).populate('user').populate('classes');
+        const teacher = await Teacher.findById(teacherId).populate('user');
         
         if (!teacher) return res.status(404).json({ message: 'Teacher not found' });
 

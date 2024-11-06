@@ -23,14 +23,14 @@ exports.getAllUsers = async (req, res) => {
 
 exports.getOneUser = async (req, res) => {
   try {
-    const { id } = req.params;
-    const user = await User.findById(id);
+    const { uuid } = req.params;
+    const user = await User.findOne({uuid});
     if (!user) {
       user.dob = user.dob.toISOString().split('T')[0];
 
       return res.status(404).send({ message: "User not found" });
     }
-    res.json(user);
+    res.status(200).json({message:"Succefully retrieved user", user});
   } catch (error) {
     res
       .status(500)
