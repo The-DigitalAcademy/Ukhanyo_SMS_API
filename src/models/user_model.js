@@ -6,6 +6,7 @@ const userSchema = new Schema({
     last_name: { type: String, required: true },
     contact_no: { type: String, required: true },
     dob: {  type: Date, require: true},
+    gender: { type: String, require: true },
     id_number: { type: String, required: true, unique: true, index: true, match: /^[0-9]{13}$/,},
     address: {
       street: { type: String, require: true  },
