@@ -11,6 +11,9 @@ const teacherRoutes = require('./src/routes/teacher_routes');
 const seedDatabase = require("./src/config/seed");
 const service_request = require("./src/routes/service_req");
 const subjectRoute = require('./src/routes/subject_routes')
+const announcementRoute = require('./src/routes/announcement_routes')
+
+
 
 app.use(cors())
 app.use((_req, res, next) => {
@@ -26,7 +29,7 @@ app.use(express.json());
 
 mongoose.connect(connectionString.url)
   .then(()=>{
-    console.log("Cnnected to DB successfully")
+    console.log("Connected to DB successfully")
   })
   .catch((err)=> console.log("Could not connect to DB due to the following ", err.errmsg))
 
@@ -46,6 +49,8 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/student', studentRoutes);
 app.use('/api/teacher', teacherRoutes);
 app.use('/api/service_req', service_request)
+app.use('/api/announcement', announcementRoute)
+
 
 
 

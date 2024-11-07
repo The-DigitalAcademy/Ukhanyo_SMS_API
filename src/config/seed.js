@@ -32,7 +32,7 @@ const connectDB = async function(){
     
 }
 
-connectDB();
+// connectDB();
 
 // Function to seed the database with values for all models
 const seedDatabase = async () => {
