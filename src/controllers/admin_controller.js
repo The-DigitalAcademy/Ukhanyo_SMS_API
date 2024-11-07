@@ -39,10 +39,10 @@ exports.getOneUser = async (req, res) => {
 };
 
 exports.updateUsers = async (req, res) => {
-  
+  console.log(req.body)
   try {
-    const updatedUser = await User.updateOne({ _id: req.params.id });
-    res.json(updatedUser);
+    const updatedUser = await User.findByIdAndUpdate(req.params.id,req.body,{new: true} );
+    res.status(200).json(updatedUser);
   } catch (error) {
     res.json({ message: error.message });
   }
