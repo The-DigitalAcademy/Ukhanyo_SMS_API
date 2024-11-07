@@ -14,14 +14,14 @@ const subjectSchema = new Schema({
     
 });
 
-subjectSchema.pre("save", async function (next) {
-  if (this.isNew) {
-      const year = new Date().getFullYear().toString().slice(-2);  
-      const sequence = Math.floor(Math.random() * 10000).toString().padStart(4, "0");  
-      this.subjectCode = `SUB${year}USR01${sequence}`;
-  }
-  next();
-});
+// subjectSchema.pre("save", async function (next) {
+//   if (this.isNew) {
+//       const year = new Date().getFullYear().toString().slice(-2);  
+//       const sequence = Math.floor(Math.random() * 10000).toString().padStart(4, "0");  
+//       this.subjectCode = `SUB${year}USR01${sequence}`;
+//   }
+//   next();
+// });
 
 subjectSchema.method("toJSON", function() {
     const { __v, _id, ...object } = this.toObject();

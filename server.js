@@ -10,7 +10,7 @@ const studentRoutes = require('./src/routes/student_routes')
 const teacherRoutes = require('./src/routes/teacher_routes');
 const seedDatabase = require("./src/config/seed");
 const service_request = require("./src/routes/service_req");
-
+const subjectRoute = require('./src/routes/subject_routes')
 
 app.use(cors())
 app.use((_req, res, next) => {
@@ -41,6 +41,7 @@ app.get("/", (_req, res) => {
 });
 
 app.use('/api/pastpaper', pastPaperRoutes);
+app.use('/api/subject', subjectRoute);
 app.use('/api/admin', adminRoutes);
 app.use('/api/student', studentRoutes);
 app.use('/api/teacher', teacherRoutes);
