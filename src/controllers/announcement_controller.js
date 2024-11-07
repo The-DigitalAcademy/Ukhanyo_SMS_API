@@ -6,7 +6,6 @@ const Subject = require('../models/subject');
 exports.addAnnouncement = async (req, res)=>{
   try {
       const { subjectCode, title, message, teacherId  } = req.body;
-        console.log(req.body)
 
       const subject = await Subject.findOne({subjectCode});
         if (!subject) return res.status(404).json({ message: 'Subject not found' });
@@ -27,10 +26,11 @@ exports.addAnnouncement = async (req, res)=>{
   }
 }
 
-exports.getAnnouncementsBySubject = async (req, res) => {
+exports.getAnnouncementsByTeacher= async (req, res) => {
     try {
-        const { subjectId } = req.params.id;
-        const announcements = await Announcement.find({ class: subjectId });
+        const { teacherId } = req.params.id;
+
+        const announcements = (await Announcement.find({ createdBy: teacherId })).populate('createdBy');
         res.status(200).json(announcements);
     } catch (err) {
         res.status(500).json({ message: 'Error fetching announcements', error: err.message });
