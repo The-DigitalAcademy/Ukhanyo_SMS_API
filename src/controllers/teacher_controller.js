@@ -67,7 +67,7 @@ exports.getTeacherCourses = async (req, res) => {
 }
 
 
-exports.updateTeacherCourses = async (req, res) => {
+exports.updateTeacherDetails = async (req, res) => {
     try {
         const { teacherId } = req.params;
         const { courses } = req.body;
@@ -86,15 +86,17 @@ exports.updateTeacherCourses = async (req, res) => {
 }
 
 
-exports.deleteTeacher = async (req, res) => {
+exports.removeTeacher = async (req, res)=>{
+    const { teacherId } = req.params.id
     try {
-        const { teacherId } = req.params;
+        
+        console.log(req.params.id)
 
-        const deletedTeacher = await Teacher.findByIdAndDelete(teacherId);
+        const deletedTeacher = await Teacher.findOneAndDelete({teacherId});
         if (!deletedTeacher) return res.status(404).json({ message: 'Teacher not found' });
 
         res.status(200).json({ message: 'Teacher deleted' });
-    } catch (err) {
+    } catch (error) {
         res.status(500).json({ message: 'Error deleting teacher', error: err.message });
     }
 }

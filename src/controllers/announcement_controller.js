@@ -37,7 +37,6 @@ exports.getAnnouncementsByTeacher= async (req, res) => {
     }
 }
 
-// needed??
 exports.updateAnnouncement = async (req, res) => {
     try {
         const { announcementId } = req.params;
