@@ -91,14 +91,19 @@ exports.getAnnouncementById = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 // Update an announcement
 exports.updateAnnouncement = async (req, res) => {
-  const { title, content, author, targetAudience } = req.body;
+
+  const { subjectCode, title, message, teacherId } = req.body;
 
   try {
+    const subject = await Subject.findOne({subjectCode});
+    if (!subject) return res.status(404).json({ message: 'Subject not found' });
+
     const updatedAnnouncement = await Announcement.findByIdAndUpdate(
       req.params.id,
-      { title, content, author, targetAudience },
+      { class: subject.id, title, message, createdBy: teacherId },
       { new: true }
     );
 

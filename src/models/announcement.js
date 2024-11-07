@@ -6,8 +6,9 @@ const announcementSchema = new Schema({
     title: { type: String, required: true },
     message: { type: String, required: true },
     date: { type: Date, default: Date.now },
-    createdBy: { type: Schema.Types.ObjectId, ref: 'Teacher', required: true } 
-});
+    createdBy: { type: Schema.Types.ObjectId, ref: 'Teacher', required: true,
+     }
+}, {timestamps: true});
 
 announcementSchema.method("toJSON", function() {
   const { __v, _id, ...object } = this.toObject();
