@@ -10,6 +10,7 @@ exports.createTeacher = async (req, res) => {
 
         const user = await User.findOne({uuid});
         if (!user) return res.status(404).json({ message: 'User not found' });
+        
 
         // const subject = await Subject.findOne({subjectCode})
         // console.log(subject)
@@ -90,8 +91,6 @@ exports.removeTeacher = async (req, res)=>{
     const { teacherId } = req.params.id
     try {
         
-        console.log(req.params.id)
-
         const deletedTeacher = await Teacher.findOneAndDelete({teacherId});
         if (!deletedTeacher) return res.status(404).json({ message: 'Teacher not found' });
 

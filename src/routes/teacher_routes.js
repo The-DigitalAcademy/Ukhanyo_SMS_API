@@ -8,7 +8,7 @@ router.get("/get-all", teacherController.getAllTeachers);
 
 router.get("/:id", teacherController.getTeacherById);
 
-router.put("/update/:id", teacherController.updateTeacherDetails); 
+router.put("/:id", teacherController.updateTeacherDetails); 
 
 router.delete("/:id", teacherController.removeTeacher); 
 

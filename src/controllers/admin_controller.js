@@ -39,6 +39,7 @@ exports.getOneUser = async (req, res) => {
 };
 
 exports.updateUsers = async (req, res) => {
+  
   try {
     const updatedUser = await User.updateOne({ _id: req.params.id });
     res.json(updatedUser);
