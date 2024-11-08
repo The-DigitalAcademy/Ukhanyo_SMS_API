@@ -14,6 +14,7 @@ const userSchema = new Schema({
       city: { type: String, require: true },
       postal_code: { type: String, require: true },
     },
+    image: { type: String, require: true, default: "https://static.vecteezy.com/system/resources/previews/002/318/271/non_2x/user-profile-icon-free-vector.jpg"},
     uuid : {type: String, unique: true},
     status: { type: String, enum: ['active', 'inactive', 'suspended'], default: 'active' },
     email: { type: String, required: true, unique: true },

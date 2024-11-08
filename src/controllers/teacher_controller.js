@@ -6,18 +6,23 @@ const Subject = require('../models/subject');
 
 exports.createTeacher = async (req, res) => {
     try {
-        const { uuid, subject } = req.body;
+        const { uuid, subjects } = req.body;
 
         const user = await User.findOne({uuid});
         if (!user) return res.status(404).json({ message: 'User not found' });
-        
 
-        // const subject = await Subject.findOne({subjectCode})
-        // console.log(subject)
+        const subjectArray = await Subject.find({ "subjectCode" : { "$in" : subjects } })
+        let subjectIDarr = [];
+
+        if(subjectArray.length > 0){
+            for(const element of subjectArray) {
+            subjectIDarr.push(element.id)
+          }
+        }
 
         const teacher = new Teacher({
             user: user.id,
-            classes: subject
+            classes: subjectIDarr
         });
 
         await teacher.save();
@@ -70,12 +75,24 @@ exports.getTeacherCourses = async (req, res) => {
 
 exports.updateTeacherDetails = async (req, res) => {
     try {
-        const { teacherId } = req.params;
-        const { courses } = req.body;
+        const { teacherId } = req;
+        console.log(teacherId)
+        const { subjects } = req.body;
+        let subjectIDarr = [];
+
+        if(!subjects){
+            return res.json({message: "No subjects was provided"})
+        }
+
+        const subjectArray = await Subject.find({ "subjectCode" : { "$in" : subjects } })
+       
+        for(const element of subjectArray) {
+            subjectIDarr.push(element.id)
+          }
 
         const updatedTeacher = await Teacher.findByIdAndUpdate(
             teacherId,
-            { classes: courses },
+            { classes: subjectIDarr },
             { new: true }
         ).populate('user').populate('classes');
         if (!updatedTeacher) return res.status(404).json({ message: 'Teacher not found' });
@@ -85,6 +102,7 @@ exports.updateTeacherDetails = async (req, res) => {
         res.status(500).json({ message: 'Error updating teacher courses', error: err.message });
     }
 }
+
 
 
 exports.removeTeacher = async (req, res)=>{

@@ -39,10 +39,16 @@ exports.getOneUser = async (req, res) => {
 };
 
 exports.updateUsers = async (req, res) => {
-  console.log(req.body)
   try {
+    if(req.params.id === undefined){
+      return res.status(404).json({message: "Could not get id"})
+    }
+
     const updatedUser = await User.findByIdAndUpdate(req.params.id,req.body,{new: true} );
-    res.status(200).json(updatedUser);
+      return res.status(200).json(updatedUser);
+    
+    
+    
   } catch (error) {
     res.json({ message: error.message });
   }
@@ -62,7 +68,7 @@ exports.deleteAllUsers = async (req, res) => {
 exports.deleteUsers = async (req, res) => {
   try {
     const removedUser = await User.deleteOne({ _id: req.params.id });
-    res.json(removedUser);
+    res.status(200).json(removedUser);
   } catch (error) {
     res.json({ message: error.message });
   }
