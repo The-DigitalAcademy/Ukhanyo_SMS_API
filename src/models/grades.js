@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const teacher = require('./teacher');
 const Schema = mongoose.Schema;
 
 const gradeSchema = new Schema({
@@ -7,7 +8,9 @@ const gradeSchema = new Schema({
     student: { type: Schema.Types.ObjectId, ref: 'Student', required: true },
     subject: { type: String, required: true },
     mark: { type: Number, required: true },
-    maxMark: { type: Number, required: true }
+    maxMark: { type: Number, required: true },
+    teacherId: {type: Schema.Types.ObjectId, ref: 'Student', required: true },
+    comment: { type: String, required: true },
 });
 gradeSchema.method("toJSON", function() {
     const { __v, _id, ...object } = this.toObject();

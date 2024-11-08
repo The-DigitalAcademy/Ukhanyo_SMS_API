@@ -28,9 +28,9 @@ exports.addAnnouncement = async (req, res)=>{
 
 exports.getAnnouncementsByTeacher= async (req, res) => {
     try {
-        const { teacherId } = req.params.id;
+        const teacherId  = req.params.id;
 
-        const announcements = (await Announcement.find({ createdBy: teacherId })).populate('createdBy');
+        const announcements = await Announcement.find({ createdBy: teacherId }).populate('createdBy').populate('class');
         res.status(200).json(announcements);
     } catch (err) {
         res.status(500).json({ message: 'Error fetching announcements', error: err.message });
