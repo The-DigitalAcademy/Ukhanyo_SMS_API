@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 const gradeSchema = new Schema({
     name: { type: String, required: true },
     type: { type: String, required: true },
+    term: { type: String, required: true },
     student: { type: Schema.Types.ObjectId, ref: 'Student', required: true },
     subject: { type: String, required: true },
     mark: { type: Number, required: true },

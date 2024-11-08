@@ -5,7 +5,7 @@ const Student = require('../models/student');
 
 exports.addGrade = async (req, res) => {
     try {
-        const { name, type, studentId, subject, grade, maxGrade, teacherId, comment} = req.body;
+        const { name, type, term, studentId, subject, mark, maxMark, teacherId, comment} = req.body;
 
         const className = await Subject.findOne({subjectCode: subject});
         if (!className) return res.status(404).json({ message: 'Subject not found' });
@@ -19,8 +19,8 @@ exports.addGrade = async (req, res) => {
             term,
             subject: className.id,
             student: studentId,
-            grade,
-            maxGrade,
+            mark,
+            maxMark,
             teacherId,
             comment
         });
