@@ -8,6 +8,7 @@ router.get("/get-all", studentController.getAllStudents);
 
 router.get("/get-one/:id", studentController.getOneStudent);
 
+
 router.delete("/delete-all", studentController.deleteAllStudents);
 
 router.delete("/delete-one/:id", studentController.deleteStudents);

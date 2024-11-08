@@ -7,7 +7,7 @@ const gradeSchema = new Schema({
     type: { type: String, required: true },
     term: { type: String, required: true },
     student: { type: Schema.Types.ObjectId, ref: 'Student', required: true },
-    subject: { type: String, required: true },
+    subject: { type: Schema.Types.ObjectId, ref: 'Subject', required: true},
     mark: { type: Number, required: true },
     maxMark: { type: Number, required: true },
     teacherId: {type: Schema.Types.ObjectId, ref: 'Student', required: true },
