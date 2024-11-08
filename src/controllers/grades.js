@@ -47,12 +47,14 @@ exports.getCourseGrades = async (req, res) => {
 exports.getAllStudentGrades = async (req, res) => {
     try {
         const studendId  = req.params.id;
-        const student = await Student.findById(studendId)
+        const student = await Student.findById(studendId).populate('user')
         if(!student) return res.status(404).json({message: "Could not find student!!!"});
         console.log(student)
 
         const grades = await Grade.find({student: student.id}).populate('student').populate('subject');
         
+        if(grades.length==0) return res.status(404).json({message: `Could not get grades for this student: ${student.user.name}`, })
+
         res.status(200).json(grades);
 
     } catch (err) {
