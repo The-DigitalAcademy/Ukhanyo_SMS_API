@@ -1,24 +1,27 @@
-const Grade = require('../models/grade');
-const Course = require('../models/course');
+const Grade = require('../models/grades');
+const Subject = require('../models/subject');
 const Student = require('../models/student');
 
 
 exports.addGrade = async (req, res) => {
     try {
-        const { courseId, studentId, subject, grade, maxGrade } = req.body;
+        const { name, type, studentId, subject, grade, maxGrade, teacherId} = req.body;
 
-        const course = await Course.findById(courseId);
-        if (!course) return res.status(404).json({ message: 'Course not found' });
+        const className = await Subject.findOne({subjectCode: subject});
+        if (!className) return res.status(404).json({ message: 'Subject not found' });
 
         const student = await Student.findById(studentId);
         if (!student) return res.status(404).json({ message: 'Student not found' });
 
         const newGrade = new Grade({
-            class: courseId,
+            name,
+            type,
+            term,
+            subject: className.id,
             student: studentId,
-            subject,
             grade,
-            maxGrade
+            maxGrade,
+            teacherId
         });
 
         await newGrade.save();

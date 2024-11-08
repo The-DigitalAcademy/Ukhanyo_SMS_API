@@ -74,12 +74,13 @@ exports.getTeacherCourses = async (req, res) => {
 
 
 exports.updateTeacherDetails = async (req, res) => {
-    try {
-        const { teacherId } = req;
-        console.log(teacherId)
-        const { subjects } = req.body;
-        let subjectIDarr = [];
+    const teacherId  = req.params.id;
+    const { subjects } = req.body;
+    let subjectIDarr = [];
+    console.log(teacherId)
 
+    try {
+        
         if(!subjects){
             return res.json({message: "No subjects was provided"})
         }
@@ -102,6 +103,13 @@ exports.updateTeacherDetails = async (req, res) => {
         res.status(500).json({ message: 'Error updating teacher courses', error: err.message });
     }
 }
+// exports.updateTeacherInfo = async (req, res) =>{
+//     const  teacherId  = req.params.id
+//     const { subjects } = req.body;
+//     let subjectIDarr = [];
+//     console.log("jjsjjsjsj",teacherId, req.body)
+// }
+
 
 
 

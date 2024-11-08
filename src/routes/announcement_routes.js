@@ -4,7 +4,9 @@ const announcementController = require('../controllers/announcement_controller')
 
 router.get('/all', announcementController.getAllAnnouncements);
 
-router.get('/announcement/:id', announcementController.getAnnouncementById);
+router.get('/:id', announcementController.getAnnouncementById);
+
+router.get('/teacher/:id', announcementController.getAnnouncementsByTeacher)
 
 router.post('/add', announcementController.addAnnouncement);
 
