@@ -12,6 +12,7 @@ const service_request = require("./src/routes/service_req");
 const subjectRoute = require('./src/routes/subject_routes')
 const announcementRoute = require('./src/routes/announcement_routes')
 const gradeRoutes = require('./src/routes/grade_routes')
+const registerRoutes = require('./src/routes/register_routes')
 
 
 app.use(cors())
@@ -50,6 +51,8 @@ app.use('/api/teacher', teacherRoutes);
 app.use('/api/service_req', service_request)
 app.use('/api/announcement', announcementRoute)
 app.use('/api/grade', gradeRoutes)
+app.use('/api/register', registerRoutes)
+
 
 
 

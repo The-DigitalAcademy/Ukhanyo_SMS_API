@@ -74,14 +74,26 @@ exports.getStudentGrades = async (req, res) => {
 }
 
 
-exports.updateGrade = async (req, res) => {
+exports.updateSudentGrade = async (req, res) => {
     try {
-        const { gradeId } = req.params;
-        const { subject, grade, maxGrade } = req.body;
+        const gradeId  = req.params.id;
+        const { name, type, term, studentId, subject, mark, maxMark, teacherId, comment} = req.body;
+
+        const className = await Subject.findOne({subjectCode: subject});
+        if (!className) return res.status(404).json({ message: 'Subject not found' });
 
         const updatedGrade = await Grade.findByIdAndUpdate(
             gradeId,
-            { subject, grade, maxGrade },
+            { name,
+                type,
+                term,
+                subject: className.id,
+                student: studentId,
+                mark,
+                maxMark,
+                teacherId,
+                comment
+            },
             { new: true }
         );
         if (!updatedGrade) return res.status(404).json({ message: 'Grade not found' });

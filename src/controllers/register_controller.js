@@ -1,19 +1,21 @@
 const Register = require('../models/register');
-const Course = require('../models/course');
+const Subject = require('../models/subject');
 const Student = require('../models/student');
+const Teacher = require('../models/teacher');
 
 
 exports.createRegister = async (req, res) => {
     try {
-        const { courseId, date, studentAttendance } = req.body;
+        const { courseId, date, studentAttendance, teacher } = req.body;
 
-        const course = await Course.findById(courseId);
-        if (!course) return res.status(404).json({ message: 'Course not found' });
+        const subject = await Subject.findOne(courseId);
+        if (!subject) return res.status(404).json({ message: 'Course not found' });
 
         const register = new Register({
-            class: courseId,
+            class: subject.id,
             date,
-            studentAttendance
+            studentAttendance,
+            teacher
         });
 
         await register.save();
@@ -26,7 +28,7 @@ exports.createRegister = async (req, res) => {
 
 exports.getAllRegisters = async (req, res) => {
     try {
-        const registers = await Register.find().populate('class').populate('studentAttendance.student');
+        const registers = await Register.find().populate('class').populate({path: 'studentAttendance.student', model: 'Student' })
         res.status(200).json(registers);
     } catch (err) {
         res.status(500).json({ message: 'Error fetching registers', error: err.message });
@@ -36,7 +38,7 @@ exports.getAllRegisters = async (req, res) => {
 
 exports.getRegisterById = async (req, res) => {
     try {
-        const { registerId } = req.params;
+        const registerId  = req.params.id;
         const register = await Register.findById(registerId).populate('class').populate('studentAttendance.student');
         if (!register) return res.status(404).json({ message: 'Register not found' });
 
@@ -47,31 +49,45 @@ exports.getRegisterById = async (req, res) => {
 }
 
 
-exports.getRegistersByCourse = async (req, res) => {
+exports.getRegistersBySubject = async (req, res) => {
     try {
-        const { courseId } = req.params;
+        const courseId = req.params.id;
 
-        const course = await Course.findById(courseId);
+        const course = await Subject.findById(courseId);
         if (!course) return res.status(404).json({ message: 'Course not found' });
 
-        const registers = await Register.find({ class: courseId }).populate('studentAttendance.student');
+        const registers = await Register.find({ class: courseId }).populate('class').populate({path:'studentAttendance.student', model: 'Student'});
         res.status(200).json(registers);
+
     } catch (err) {
         res.status(500).json({ message: 'Error fetching registers for the course', error: err.message });
     }
 }
 
+exports.getRegistersByTeacher = async (req, res) => {
+    try {
+        const teacherId = req.params.id;
+
+        const teacher = await Teacher.findById(teacherId);
+        if (!teacher) return res.status(404).json({ message: 'Teacher not found' });
+
+        const registers = await Register.find({teacher: teacher.id }).populate('class').populate({path:'studentAttendance.student', model: 'Student'}).populate('teacher');
+        res.status(200).json(registers);
+
+    } catch (err) {
+        res.status(500).json({ message: 'Error fetching registers for the course', error: err.message });
+    }
+}
 
 exports.updateRegister = async (req, res) => {
     try {
-        const { registerId } = req.params;
-        const { studentAttendance } = req.body;
-
+        const registerId = req.params.id;
+        
         const updatedRegister = await Register.findByIdAndUpdate(
             registerId,
-            { studentAttendance },
+            {...req.body},
             { new: true }
-        ).populate('class').populate('studentAttendance.student');
+        ).populate('class').populate({path: 'studentAttendance.student', model: 'Student'}).populate('teacher');
 
         if (!updatedRegister) return res.status(404).json({ message: 'Register not found' });
 
@@ -84,7 +100,7 @@ exports.updateRegister = async (req, res) => {
 
 exports.deleteRegister = async (req, res) => {
     try {
-        const { registerId } = req.params;
+        const registerId = req.params.id;
 
         const deletedRegister = await Register.findByIdAndDelete(registerId);
         if (!deletedRegister) return res.status(404).json({ message: 'Register not found' });

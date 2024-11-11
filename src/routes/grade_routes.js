@@ -9,7 +9,7 @@ router.get('/student_grades/:id', gradeController.getAllStudentGrades);
 
 router.post('/add', gradeController.addGrade);
 
-router.put('/:id', gradeController.updateGrade);
+router.put('/:id', gradeController.updateSudentGrade);
 
 router.delete('/:id', gradeController.deleteGrade);
 

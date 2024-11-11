@@ -4,9 +4,9 @@ const subjectController = require("../controllers/subject.controller");
 
 router.post("/add", subjectController.createSubject);
 
-router.get("/get-all", subjectController.getAllSubjects);
+router.get("/all", subjectController.getAllSubjects);
 
-// router.get("/get-one/:id", subjectController.getTeacherById);
+router.get("/one/:id", subjectController.getSubjectById);
 
 // router.put("/update/:id", teacherController.); 
 

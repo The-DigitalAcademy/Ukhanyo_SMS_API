@@ -35,10 +35,10 @@ exports.getAllSubjects = async (req, res) => {
 }
 
 
-exports.getCourseById = async (req, res) => {
+exports.getSubjectById = async (req, res) => {
     try {
-        const { courseId } = req.params;
-        const course = await Course.findById(courseId).populate('teacher').populate('students');
+        const courseId = req.params.id;
+        const course = await Subject.findById(courseId).populate('teacher').populate('students');
         if (!course) return res.status(404).json({ message: 'Course not found' });
 
         res.status(200).json(course);
@@ -102,13 +102,13 @@ exports.getStudyMaterials = async (req, res) => {
 
 exports.deleteCourse = async (req, res) => {
     try {
-        const { courseId } = req.params;
-        const course = await Course.findByIdAndDelete(courseId);
+        const courseId = req.params.id;
+        const course = await Subject.findByIdAndDelete(courseId);
 
-        if (!course) return res.status(404).json({ message: 'Course not found' });
+        if (!course) return res.status(404).json({ message: 'Subject not found' });
         
-        res.status(200).json({ message: 'Course deleted' });
+        res.status(200).json({ message: 'Subject deleted' });
     } catch (err) {
-        res.status(500).json({ message: 'Error deleting course', error: err.message });
+        res.status(500).json({ message: 'Error deleting subject', error: err.message });
     }
 }
