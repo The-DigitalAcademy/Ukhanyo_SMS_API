@@ -46,7 +46,7 @@ exports.getAllStudents = async (req, res) => {
 exports.getOneStudent = async (req, res) => {
   try {
     const { id } = req.params;
-    const student = await Student.findById(id).populate("user").populate('enrolledClasses');
+    const student = await Student.findById(id).populate("user").populate({path:'enrolledClasses', select: "-students"});
     if (!student) {
       return res.status(404).send({ message: "Student not found" });
     }

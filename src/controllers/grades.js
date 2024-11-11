@@ -5,7 +5,7 @@ const Student = require('../models/student');
 
 exports.addGrade = async (req, res) => {
     try {
-        const { name, type, term, studentId, subject, mark, maxMark, teacherId, comment} = req.body;
+        const { description, type, term, studentId, subject, mark, maxMark, teacherId, comment} = req.body;
 
         const className = await Subject.findOne({subjectCode: subject});
         if (!className) return res.status(404).json({ message: 'Subject not found' });
@@ -14,7 +14,7 @@ exports.addGrade = async (req, res) => {
         if (!student) return res.status(404).json({ message: 'Student not found' });
 
         const newGrade = new Grade({
-            name,
+            name: description,
             type,
             term,
             subject: className.id,
@@ -67,6 +67,20 @@ exports.getStudentGrades = async (req, res) => {
     try {
         const { studentId } = req.params;
         const grades = await Grade.find({ student: studentId }).populate('class');
+        res.status(200).json(grades);
+    } catch (err) {
+        res.status(500).json({ message: 'Error fetching grades', error: err.message });
+    }
+}
+
+exports.getStudentGradesForTeacher = async (req, res) => {
+    try {
+        const teacherId = req.params.id;
+
+        const grades = await Grade.find({teacherId}).populate('subject').populate('teacherId');
+        if(!grades){
+            return res.status(404).json({message: "Could not find requested grades"})
+        }
         res.status(200).json(grades);
     } catch (err) {
         res.status(500).json({ message: 'Error fetching grades', error: err.message });

@@ -11,6 +11,8 @@ router.post('/add', gradeController.addGrade);
 
 router.put('/:id', gradeController.updateSudentGrade);
 
+router.get('/teacher/:id', gradeController.getStudentGradesForTeacher);
+
 router.delete('/:id', gradeController.deleteGrade);
 
 module.exports = router;

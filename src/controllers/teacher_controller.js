@@ -48,7 +48,7 @@ exports.getTeacherById = async (req, res) => {
     try {
         const teacherId  = req.params.id
 
-        const teacher = await Teacher.findById(teacherId).populate('user');
+        const teacher = await Teacher.findById(teacherId).populate('user').populate('classes');
         
         if (!teacher) return res.status(404).json({ message: 'Teacher not found' });
 
@@ -59,13 +59,13 @@ exports.getTeacherById = async (req, res) => {
 }
 
 
-exports.getTeacherCourses = async (req, res) => {
+exports.getTeacherSubjects = async (req, res) => {
     try {
-        const { teacherId } = req.params;
+        const teacherId = req.params.id;
         const teacher = await Teacher.findById(teacherId).populate('classes');
         if (!teacher) return res.status(404).json({ message: 'Teacher not found' });
 
-        const courses = await Course.find({ teacher: teacherId });
+        const courses = await Subject.find({ teacher: teacherId });
         res.status(200).json(courses);
     } catch (err) {
         res.status(500).json({ message: 'Error fetching teacher courses', error: err.message });
