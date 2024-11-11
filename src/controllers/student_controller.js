@@ -59,9 +59,20 @@ exports.getOneStudent = async (req, res) => {
   }
 };
 
-exports.updateStudents = async (req, res) => {
+exports.updateStudentClasses = async (req, res) => {
   try {
-    const updatedStudent = await Student.updateOne({ _id: req.params.id });
+    const subjectArray = await Subject.find({ "subjectCode" : { "$in" : req.body.subjects } })
+    let subjectIDarr = [];
+
+    for(const element of subjectArray) {
+      subjectIDarr.push(element.id)
+    }
+
+    const updatedStudent = await Student.findByIdAndUpdate(
+      req.params.id,
+      {enrolledClasses: subjectIDarr}, 
+      {new: true}
+    );
     res.status(200).json(updatedStudent);
   } catch (error) {
     res.json({ message: error.message });
