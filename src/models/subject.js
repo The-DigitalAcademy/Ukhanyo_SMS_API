@@ -9,7 +9,7 @@ const subjectSchema = new Schema({
     studyMaterials: [{ type: Schema.Types.ObjectId, ref: "StudyMaterial" }],
     announcements: [{ type: Schema.Types.ObjectId, ref: "Announcement" }],
     events: [{ type: Schema.Types.ObjectId, ref: "Event" }],
-    marks: [{ type: Schema.Types.ObjectId, ref: "Mark" }],
+    marks: [{ type: Schema.Types.ObjectId, ref: "Grade" }],
     attendance: [{ type: Schema.Types.ObjectId, ref: "Attendance" }],
     
 });

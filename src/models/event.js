@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const eventSchema = new Schema({
     class: { type: Schema.Types.ObjectId, ref: 'Class', required: true },
-    name: { type: String, required: true },
+    title: { type: String, required: true },
     date: { type: Date, required: true },
     description: { type: String }
 });
@@ -13,4 +13,6 @@ eventSchema.method("toJSON", function() {
   object.id = _id;
   return object;
 });
+
+
 module.exports = mongoose.model('Event', eventSchema);
