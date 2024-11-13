@@ -1,27 +1,19 @@
 // models/Announcement.js
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const announcementSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-  },
-  content: {
-    type: String,
-    required: true,
-  },
-  date: {
-    type: Date,
-    default: Date.now,
-  },
-  author: {
-    type: String,
-    required: true,
-  },
-  targetAudience: {
-    type: String,  // e.g., "students", "teachers", "all"
-    default: "all",
-  },
+    title: { type: String, required: true },
+    content: { type: String, required: true },
+    createdBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    targetAudience: [{
+        type: String,
+        enum: ['all', 'teachers', 'students', 'admins']
+    }],
+    createdAt: { type: Date, default: Date.now },
+    expiryDate: Date,
+    isActive: { type: Boolean, default: true }
 });
 
-module.exports = mongoose.model('Announcement', announcementSchema);
+const Announcement = mongoose.model('Announcement', announcementSchema);
+module.exports = Announcement;
