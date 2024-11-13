@@ -1,70 +1,92 @@
-const Grade = require('../models/grades');
-
+const Grade = require('../models/grade');
 
 exports.createGrade = async (req, res) => {
-    const { student, course, subject, mark, maxMark, gradedBy } = req.body;
+    const { student, subject, assessmentType, title, score, totalPossible, date, recordedBy } = req.body;
+    
+    if (!student || !subject || !assessmentType || !title || !score || !totalPossible || !date || !recordedBy) {
+        return res.status(400).send({ message: "Required fields missing." });
+    }
 
     try {
-        const newGrade = await Grade.create({ student, course, subject, mark, maxMark, gradedBy });
-        res.status(201).json(newGrade);
+        const grade = new Grade({
+            student,
+            subject,
+            assessmentType,
+            title,
+            score,
+            totalPossible,
+            date,
+            recordedBy,
+            comment: req.body.comment
+        });
+        const result = await grade.save();
+        res.status(201).send({ grade: result });
     } catch (error) {
-        res.status(400).json({ message: "Error creating grade", error });
+        res.status(500).send({ message: "Server error." });
     }
 }
 
+exports.getGrades = async (req, res) => {
+    const { student, subject } = req.query;
+    let query = {};
 
-exports.getAllGrades = async (req, res) => {
+    if (student) query.student = student;
+    if (subject) query.subject = subject;
+
     try {
-        const grades = await Grade.find().populate('student course gradedBy');
-        res.status(200).json(grades);
+        const grades = await Grade.find(query)
+            .populate('student')
+            .populate('subject')
+            .populate('recordedBy');
+        res.status(200).send({ grades });
     } catch (error) {
-        res.status(500).json({ message: "Error retrieving grades", error });
+        res.status(500).send({ message: "Server error." });
     }
 }
-
 
 exports.getGradeById = async (req, res) => {
     const { id } = req.params;
+    if (!id) {
+        return res.status(400).send({ message: "Grade ID is required." });
+    }
 
     try {
-        const grade = await Grade.findById(id).populate('student course gradedBy');
-        if (!grade) return res.status(404).json({ message: "Grade not found" });
-        
-        res.status(200).json(grade);
+        const grade = await Grade.findById(id)
+            .populate('student')
+            .populate('subject')
+            .populate('recordedBy');
+        if (!grade) {
+            return res.status(404).send({ message: "Grade not found." });
+        }
+        res.status(200).send({ grade });
     } catch (error) {
-        res.status(500).json({ message: "Error retrieving grade", error });
+        res.status(500).send({ message: "Server error." });
     }
 }
-
 
 exports.updateGrade = async (req, res) => {
     const { id } = req.params;
-    const { student, course, subject, mark, maxMark, gradedBy } = req.body;
+    const { score, totalPossible, comment } = req.body;
 
-    try {
-        const updatedGrade = await Grade.findByIdAndUpdate(
-            id, 
-            { student, course, subject, mark, maxMark, gradedBy }, 
-            { new: true }
-        );
-        if (!updatedGrade) return res.status(404).json({ message: "Grade not found" });
-
-        res.status(200).json(updatedGrade);
-    } catch (error) {
-        res.status(400).json({ message: "Error updating grade", error });
+    if (!id) {
+        return res.status(400).send({ message: "Grade ID is required." });
     }
-}
-
-
-exports.deleteGrade = async (req, res) => {
-    const { id } = req.params;
 
     try {
-        const deletedGrade = await Grade.findByIdAndDelete(id);
-        if (!deletedGrade) return res.status(404).json({ message: "Grade not found" });
-
-        res.status(200).json({ message: "Grade deleted successfully" });
+        const grade = await Grade.findByIdAndUpdate(
+            id,
+            { score, totalPossible, comment },
+            { new: true, runValidators: true }
+        )
+        .populate('student')
+        .populate('subject')
+        .populate('recordedBy');
+        
+        if (!grade) {
+            return res.status(404).send({ message: "Grade not found." });
+        }
+        res.status(200).send({ grade });
     } catch (error) {
-        res.status(500).json({ message: "Error deleting grade", error });
+        res.status(500).send({ message: "Server error." });
     }
 }
