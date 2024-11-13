@@ -8,10 +8,15 @@ const pastPaperSchema = new mongoose.Schema({
   term: { type: Number, required: true }
 }, { timestamps: true }
 );
+<<<<<<< HEAD
 pastPaperSchema.method("toJSON", function () {
+=======
+
+
+pastPaperSchema.method("toJSON", function() {
+>>>>>>> 99875679db668f9c6bbd9b5864f6fc921fa6b437
   const { __v, _id, ...object } = this.toObject();
   object.id = _id;
   return object;
 });
 module.exports = mongoose.model('PastPaper', pastPaperSchema);
-// @add timestamp
