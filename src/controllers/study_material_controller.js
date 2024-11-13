@@ -2,76 +2,84 @@ const StudyMaterial = require('../models/study_material');
 
 
 exports.createStudyMaterial = async (req, res) => {
-    const { course, title, description, fileUrl, uploadedBy } = req.body;
+    const { title, description, subject, fileUrl, uploadedBy } = req.body;
+    
+    if (!title || !subject || !fileUrl || !uploadedBy) {
+        return res.status(400).send({ message: "Required fields missing." });
+    }
 
     try {
-        const newMaterial = await StudyMaterial.create({
-            course,
+        const studyMaterial = new StudyMaterial({
             title,
             description,
+            subject,
             fileUrl,
             uploadedBy
         });
-        res.status(201).json(newMaterial);
+        const result = await studyMaterial.save();
+        res.status(201).send({ studyMaterial: result });
     } catch (error) {
-        res.status(400).json({ message: "Error creating study material", error });
+        res.status(500).send({ message: "Server error." });
     }
 }
 
-
-exports.getAllStudyMaterials = async (req, res) => {
+exports.getStudyMaterials = async (req, res) => {
     try {
-        const materials = await StudyMaterial.find().populate('course uploadedBy');
-        res.status(200).json(materials);
+        const studyMaterials = await StudyMaterial.find({})
+            .populate('subject')
+            .populate('uploadedBy');
+        res.status(200).send({ studyMaterials });
     } catch (error) {
-        res.status(500).json({ message: "Error retrieving study materials", error });
+        res.status(500).send({ message: "Server error." });
     }
 }
-
 
 exports.getStudyMaterialById = async (req, res) => {
     const { id } = req.params;
+    if (!id) {
+        return res.status(400).send({ message: "Study Material ID is required." });
+    }
 
     try {
-        const material = await StudyMaterial.findById(id).populate('course uploadedBy');
-        if (!material) return res.status(404).json({ message: "Study material not found" });
-
-        res.status(200).json(material);
+        const studyMaterial = await StudyMaterial.findById(id)
+            .populate('subject')
+            .populate('uploadedBy');
+        if (!studyMaterial) {
+            return res.status(404).send({ message: "Study Material not found." });
+        }
+        res.status(200).send({ studyMaterial });
     } catch (error) {
-        res.status(500).json({ message: "Error retrieving study material", error });
+        res.status(500).send({ message: "Server error." });
     }
 }
-
 
 exports.updateStudyMaterial = async (req, res) => {
     const { id } = req.params;
-    const { course, title, description, fileUrl, uploadedBy } = req.body;
+    const { title, description, fileUrl } = req.body;
 
-    try {
-        const updatedMaterial = await StudyMaterial.findByIdAndUpdate(
-            id, 
-            { course, title, description, fileUrl, uploadedBy }, 
-            { new: true }
-        ).populate('course uploadedBy');
-
-        if (!updatedMaterial) return res.status(404).json({ message: "Study material not found" });
-
-        res.status(200).json(updatedMaterial);
-    } catch (error) {
-        res.status(400).json({ message: "Error updating study material", error });
+    if (!id) {
+        return res.status(400).send({ message: "Study Material ID is required." });
     }
-}
-
-
-exports.deleteStudyMaterial = async (req, res) => {
-    const { id } = req.params;
 
     try {
-        const deletedMaterial = await StudyMaterial.findByIdAndDelete(id);
-        if (!deletedMaterial) return res.status(404).json({ message: "Study material not found" });
-
-        res.status(200).json({ message: "Study material deleted successfully" });
+        const studyMaterial = await StudyMaterial.findByIdAndUpdate(
+            id,
+            { 
+                title, 
+                description, 
+                fileUrl,
+                lastUpdated: Date.now() 
+            },
+            { new: true, runValidators: true }
+        )
+        .populate('subject')
+        .populate('uploadedBy');
+        
+        if (!studyMaterial) {
+            return res.status(404).send({ message: "Study Material not found." });
+        }
+        res.status(200).send({ studyMaterial });
     } catch (error) {
-        res.status(500).json({ message: "Error deleting study material", error });
+        res.status(500).send({ message: "Server error." });
     }
 }
