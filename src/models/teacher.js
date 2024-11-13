@@ -1,25 +1,12 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const teacherSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    
-  },
-  description: {
-    type: String,
-  },
-  roles: {
-    type: [{
-        type: String,
-        enum: ['user', 'admin']
-    }],
-    default: ['admin']
-},
-
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    employeeId: { type: String, required: true, unique: true },
+    qualifications: [String],
+    subjects: [{ type: Schema.Types.ObjectId, ref: 'Subject' }]
 });
 
-const Teacher = mongoose.model('admin', teacherSchema);
-
-// Teacher.insertMany([{name:"Ms Mary Sobekwa",description:"Teaches grade 11& 12 pupils. Specializes in Mathematics and Life Sciences."}])
-
+const Teacher = mongoose.model('Teacher', teacherSchema);
 module.exports = Teacher;
