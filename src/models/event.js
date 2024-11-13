@@ -1,30 +1,18 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const eventSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
-    required: true,
-  },
-  date: {
-    type: Date,
-    required: true,
-  },
-  location: {
-    type: String,
-    required: true,
-  },
-  organizer: {
-    type: String,  
-    default: "School Admin",
-  },
-  targetAudience: {
-    type: String,  
-    default: "all",
-  },
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    startDate: { type: Date, required: true },
+    type: { type: String, enum: ['academic', 'social', 'sports', 'other'] },
+    targetAudience: [{
+        type: String,
+        enum: ['all', 'teachers', 'students', 'admins']
+    }],
+    isActive: { type: Boolean, default: true },
+    createdAt: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('Event', eventSchema);
+const Event = mongoose.model('Event', eventSchema);
+module.exports = Event;
