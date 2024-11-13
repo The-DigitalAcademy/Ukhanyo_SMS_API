@@ -1,43 +1,23 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const serviceRequestSchema = new Schema({
-    requestedBy: { 
-        type: Schema.Types.ObjectId, 
-        refPath: 'userType', 
-        required: true 
-    },
-    userType: { 
-        type: String, 
-        required: true, 
-        enum: ['Admin', 'admin', 'Student'] 
-    },
-    type: { 
-        type: String, 
-        required: true, 
-        enum: ['technical', 'administrative', 'other'] 
-    }, 
-    description: { 
-        type: String, 
-        required: true 
-    },
+const serviceRequestSchema = new mongoose.Schema({
+    requesterId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    type: { type: String, enum: ['administrative', 'technical', 'other'], required: true },
+    title: { type: String, required: true },
+    description: { type: String, required: true },
     status: { 
         type: String, 
-        enum: ['pending', 'in-progress', 'completed'], 
-        default: 'pending' 
+        enum: ['pending', 'in-progress', 'resolved', 'cancelled'],
+        default: 'pending'
     },
-    priority: { 
-        type: String, 
-        enum: ['low', 'medium', 'high'], 
-        default: 'medium' 
-    },
-    dateRequested: { 
-        type: Date, 
-        default: Date.now 
-    },
-    dateResolved: { 
-        type: Date 
-    }
-}, { timestamps: true });
+    priority: { type: String, enum: ['low', 'medium', 'high'], default: 'medium' },
+    assignedTo: { type: Schema.Types.ObjectId, ref: 'User' },
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now },
+    resolution: String,
+    attachments: [String]
+});
 
-module.exports = mongoose.model('ServiceRequest', serviceRequestSchema);
+const ServiceRequest = mongoose.model('ServiceRequest', serviceRequestSchema);
+module.exports = ServiceRequest;
