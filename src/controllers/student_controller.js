@@ -1,6 +1,4 @@
 const Student = require("../models/student");
-const Subject = require("../models/subject");
-const User = require('../models/user_model')
 
 exports.createStudent = async (req, res) => {
     const {uuid, subjects}= req.body 

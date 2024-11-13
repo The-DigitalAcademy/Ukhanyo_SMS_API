@@ -1,21 +1,29 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose');
 
-const courseSchema = new Schema({
-    name: { type: String, required: true },
-    teacher: { type: Schema.Types.ObjectId, ref: "Teacher", required: true },
-    students: [{ type: Schema.Types.ObjectId, ref: "Student" }],
-    studyMaterials: [{ type: Schema.Types.ObjectId, ref: "StudyMaterial" }],
-    announcements: [{ type: Schema.Types.ObjectId, ref: "Announcement" }],
-    events: [{ type: Schema.Types.ObjectId, ref: "Event" }],
-    marks: [{ type: Schema.Types.ObjectId, ref: "Mark" }],
-    attendance: [{ type: Schema.Types.ObjectId, ref: "Attendance" }],
+const courseSchema = new mongoose.Schema({
+  courseName: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  credits: {
+    type: Number,
+    required: true,
+  },
+  instructor: {
+    type: String,
+    required: true,
+  },
+  duration: {
+    type: String,  
+    required: true,
+  },
+  schedule: {
+    type: String,  
+  },
 });
 
-courseSchema.method("toJSON", function() {
-    const { __v, _id, ...object } = this.toObject();
-    object.id = _id;
-    return object;
-  });
-
-module.exports = mongoose.model("Course", courseSchema);
+module.exports = mongoose.model('Course', courseSchema);
