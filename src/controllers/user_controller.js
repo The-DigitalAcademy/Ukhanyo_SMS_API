@@ -3,8 +3,9 @@ const User = require('../models/user_model');
 
 exports.createUser = async (req, res) => {
     try {
-        const { name, email, password, role } = req.body;
-
+        if(!req.body){
+            return res.json({message: "Form fields cannot be empty!!!"})
+        }
         const user = new User({...req.body});
 
         await user.save();
@@ -27,7 +28,7 @@ exports.getAllUsers = async (req, res) => {
 
 exports.getUserById = async (req, res) => {
     try {
-        const { userId } = req.params;
+        const userId  = req.params.id;
         const user = await User.findById(userId);
         if (!user) return res.status(404).json({ message: 'User not found' });
 
@@ -40,12 +41,11 @@ exports.getUserById = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
     try {
-        const { userId } = req.params;
-        const { name, email, role } = req.body;
-
+        const  userId  = req.params.id;
+        
         const updatedUser = await User.findByIdAndUpdate(
             userId,
-            { name, email, role },
+            {...req.body},
             { new: true }
         );
         if (!updatedUser) return res.status(404).json({ message: 'User not found' });

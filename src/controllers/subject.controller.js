@@ -50,7 +50,7 @@ exports.getSubjectById = async (req, res) => {
 
 exports.getSubjectStudents = async (req, res) => {
     try {
-        const { courseId } = req.params;
+        const courseId = req.params.id;
         const course = await Subject.findById(courseId).populate('students');
         if (!course) return res.status(404).json({ message: 'Course not found' });
 
@@ -66,7 +66,7 @@ exports.addStudyMaterial = async (req, res) => {
         const { courseId, title, description, fileUrl } = req.body;
         const teacherId = req.user._id;
 
-        const course = await Course.findById(courseId);
+        const course = await Subject.findById(courseId);
         if (!course) return res.status(404).json({ message: 'Course not found' });
 
         const studyMaterial = new StudyMaterial({

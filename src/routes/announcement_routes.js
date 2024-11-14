@@ -8,6 +8,9 @@ router.get('/:id', announcementController.getAnnouncementById);
 
 router.get('/teacher/:id', announcementController.getAnnouncementsByTeacher)
 
+router.get('/student/:id', announcementController.getAnnouncementsBySubject)
+
+
 router.post('/add', announcementController.addAnnouncement);
 
 router.put('/:id', announcementController.updateAnnouncement);

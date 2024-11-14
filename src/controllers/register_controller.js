@@ -39,7 +39,10 @@ exports.getAllRegisters = async (req, res) => {
 exports.getRegisterById = async (req, res) => {
     try {
         const registerId  = req.params.id;
-        const register = await Register.findById(registerId).populate('class').populate('studentAttendance.student');
+        const register = await Register.findById(registerId).populate('class').populate({
+            path:'studentAttendance.student', 
+            populate:('user')
+        });;
         if (!register) return res.status(404).json({ message: 'Register not found' });
 
         res.status(200).json(register);
@@ -56,7 +59,11 @@ exports.getRegistersBySubject = async (req, res) => {
         const course = await Subject.findById(courseId);
         if (!course) return res.status(404).json({ message: 'Course not found' });
 
-        const registers = await Register.find({ class: courseId }).populate('class').populate({path:'studentAttendance.student', model: 'Student'});
+        const registers = await Register.find({ class: courseId }).populate('class').populate({
+            path:'studentAttendance.student', 
+            populate:('user')
+        });
+        
         res.status(200).json(registers);
 
     } catch (err) {
@@ -71,7 +78,10 @@ exports.getRegistersByTeacher = async (req, res) => {
         const teacher = await Teacher.findById(teacherId);
         if (!teacher) return res.status(404).json({ message: 'Teacher not found' });
 
-        const registers = await Register.find({teacher: teacher.id }).populate('class').populate({path:'studentAttendance.student', model: 'Student'}).populate('teacher');
+        const registers = await Register.find({teacher: teacher.id }).populate('class').populate({
+            path:'studentAttendance.student', 
+            populate:('user')
+        }).populate('teacher');
         res.status(200).json(registers);
 
     } catch (err) {

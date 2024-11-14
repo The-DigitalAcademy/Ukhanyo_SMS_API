@@ -4,7 +4,7 @@ const teacherController = require("../controllers/teacher_controller");
 
 router.post("/add", teacherController.createTeacher);
 
-router.get("/get-all", teacherController.getAllTeachers);
+router.get("/all", teacherController.getAllTeachers);
 
 router.get("/:id", teacherController.getTeacherById);
 

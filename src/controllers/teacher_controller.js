@@ -7,7 +7,7 @@ const Subject = require('../models/subject');
 exports.createTeacher = async (req, res) => {
     try {
         const { uuid, subjects } = req.body;
-
+        
         const user = await User.findOne({uuid});
         if (!user) return res.status(404).json({ message: 'User not found' });
 
@@ -47,6 +47,7 @@ exports.getAllTeachers = async (req, res) => {
 exports.getTeacherById = async (req, res) => {
     try {
         const teacherId  = req.params.id
+        if (!teacherId) return res.json("ID undefined!!");
 
         const teacher = await Teacher.findById(teacherId).populate('user').populate('classes');
         
@@ -77,7 +78,6 @@ exports.updateTeacherDetails = async (req, res) => {
     const teacherId  = req.params.id;
     const { subjects } = req.body;
     let subjectIDarr = [];
-    console.log(teacherId)
 
     try {
         
@@ -103,18 +103,10 @@ exports.updateTeacherDetails = async (req, res) => {
         res.status(500).json({ message: 'Error updating teacher courses', error: err.message });
     }
 }
-// exports.updateTeacherInfo = async (req, res) =>{
-//     const  teacherId  = req.params.id
-//     const { subjects } = req.body;
-//     let subjectIDarr = [];
-//     console.log("jjsjjsjsj",teacherId, req.body)
-// }
-
-
 
 
 exports.removeTeacher = async (req, res)=>{
-    const { teacherId } = req.params.id
+    const teacherId = req.params.id
     try {
         
         const deletedTeacher = await Teacher.findOneAndDelete({teacherId});
