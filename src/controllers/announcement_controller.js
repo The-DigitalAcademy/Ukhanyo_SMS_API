@@ -73,6 +73,9 @@ exports.updateAnnouncement = async (req, res) => {
 
 exports.deleteAnnouncement = async (req, res) => {
     const { id } = req.params;
+    if (!id) {
+        return res.status(400).send({ message: "Announcement ID is required." });
+    }
 
     try {
       const announcement = await Announcement.findById(id);
@@ -93,5 +96,25 @@ exports.deleteAnnouncement = async (req, res) => {
   
     } catch (error) {
       return res.status(500).json({ message: "Server error." });
+    }
+}
+
+exports.getAllAnnouncements = async (req, res) => {
+    try {
+        const announcements = await Announcement.find()
+            .populate('createdBy', '-password')
+            .sort({ createdAt: -1 });
+        res.status(200).send({ announcements });
+    } catch (error) {
+        res.status(500).send({ message: "Server error." });
+    }
+}
+
+exports.deleteAllAnnouncements = async (req, res) => {
+    try {
+        await Announcement.deleteMany({});
+        res.status(200).send({ message: "All announcements deleted successfully." });
+    } catch (error) {
+        res.status(500).send({ message: "Server error." });
     }
 }
