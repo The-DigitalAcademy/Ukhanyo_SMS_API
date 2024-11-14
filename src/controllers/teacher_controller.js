@@ -77,3 +77,52 @@ exports.updateTeacher = async (req, res) => {
         res.status(500).send({ message: "Server error." });
     }
 }
+
+exports.getAllTeachers = async (req, res) => {
+    try {
+        const teachers = await Teacher.find()
+            .populate('user', '-password')
+            .populate('subjects');
+        res.status(200).send({ teachers });
+    } catch (error) {
+        res.status(500).send({ message: "Server error." });
+    }
+}
+
+exports.deleteAllTeachers = async (req, res) => {
+    try {
+        await Teacher.deleteMany({});
+        res.status(200).send({ message: "All teachers deleted successfully." });
+    } catch (error) {
+        res.status(500).send({ message: "Server error." });
+    }
+}
+
+
+exports.deleteTeacher = async (req, res) => {
+    const { id } = req.params;
+    if (!id) {
+        return res.status(400).send({ message: "Teacher ID is required." });
+    }
+    
+    try {
+        const teacher = await Teacher.findById(id);
+        if (!teacher) {
+            return res.status(404).send({ message: "Teacher not found." });
+        }
+
+        await User.findByIdAndDelete(teacher.user);
+        
+        // Update subjects to remove this teacher
+        await Subject.updateMany(
+            { teacher: id },
+            { $unset: { teacher: "" } }
+        );
+        
+        await Teacher.findByIdAndDelete(id);
+        
+        res.status(200).send({ message: "Teacher and associated user account deleted successfully." });
+    } catch (error) {
+        res.status(500).send({ message: "Server error." });
+    }
+}

@@ -101,3 +101,57 @@ exports.updateAttendance = async (req, res) => {
         res.status(500).send({ message: "Server error." });
     }
 }
+
+exports.getAllAttendance = async (req, res) => {
+    try {
+        const attendance = await Attendance.find()
+            .populate('student', '-password')
+            .populate('subject')
+            .populate('recordedBy', '-password')
+            .sort({ date: -1 });
+        res.status(200).send({ attendance });
+    } catch (error) {
+        res.status(500).send({ message: "Server error." });
+    }
+}
+
+exports.deleteAllAttendance = async (req, res) => {
+    try {
+        await Attendance.deleteMany({});
+        res.status(200).send({ message: "All attendance records deleted successfully." });
+    } catch (error) {
+        res.status(500).send({ message: "Server error." });
+    }
+}
+
+exports.deleteAttendance = async (req, res) => {
+    const { id } = req.params;
+    if (!id) {
+        return res.status(400).send({ message: "Attendance ID is required." });
+    }
+    try {
+        const attendance = await Attendance.findByIdAndDelete(id);
+        if (!attendance) {
+            return res.status(404).send({ message: "Attendance record not found." });
+        }
+        res.status(200).send({ message: "Attendance record deleted successfully." });
+    } catch (error) {
+        res.status(500).send({ message: "Server error." });
+    }
+}
+
+exports.deleteAttendance = async (req, res) => {
+    const { id } = req.params;
+    if (!id) {
+        return res.status(400).send({ message: "Attendance ID is required." });
+    }
+    try {
+        const attendance = await Attendance.findByIdAndDelete(id);
+        if (!attendance) {
+            return res.status(404).send({ message: "Attendance record not found." });
+        }
+        res.status(200).send({ message: "Attendance record deleted successfully." });
+    } catch (error) {
+        res.status(500).send({ message: "Server error." });
+    }
+}

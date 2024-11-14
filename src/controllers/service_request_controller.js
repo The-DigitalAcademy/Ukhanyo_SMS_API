@@ -90,3 +90,40 @@ exports.updateServiceRequest = async (req, res) => {
         res.status(500).send({ message: "Server error." });
     }
 }
+
+exports.getAllServiceRequests = async (req, res) => {
+    try {
+        const serviceRequests = await ServiceRequest.find()
+            .populate('requesterId', '-password')
+            .populate('assignedTo', '-password')
+            .sort({ createdAt: -1 });
+        res.status(200).send({ serviceRequests });
+    } catch (error) {
+        res.status(500).send({ message: "Server error." });
+    }
+}
+
+exports.deleteAllServiceRequests = async (req, res) => {
+    try {
+        await ServiceRequest.deleteMany({});
+        res.status(200).send({ message: "All service requests deleted successfully." });
+    } catch (error) {
+        res.status(500).send({ message: "Server error." });
+    }
+}
+
+exports.deleteServiceRequest = async (req, res) => {
+    const { id } = req.params;
+    if (!id) {
+        return res.status(400).send({ message: "Service Request ID is required." });
+    }
+    try {
+        const serviceRequest = await ServiceRequest.findByIdAndDelete(id);
+        if (!serviceRequest) {
+            return res.status(404).send({ message: "Service Request not found." });
+        }
+        res.status(200).send({ message: "Service Request deleted successfully." });
+    } catch (error) {
+        res.status(500).send({ message: "Server error." });
+    }
+}

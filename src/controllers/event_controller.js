@@ -85,3 +85,38 @@ exports.updateEvent = async (req, res) => {
         res.status(500).send({ message: "Server error." });
     }
 }
+
+exports.getAllEvents = async (req, res) => {
+    try {
+        const events = await Event.find()
+            .sort({ startDate: -1 });
+        res.status(200).send({ events });
+    } catch (error) {
+        res.status(500).send({ message: "Server error." });
+    }
+}
+
+exports.deleteAllEvents = async (req, res) => {
+    try {
+        await Event.deleteMany({});
+        res.status(200).send({ message: "All events deleted successfully." });
+    } catch (error) {
+        res.status(500).send({ message: "Server error." });
+    }
+}
+
+exports.deleteEvent = async (req, res) => {
+    const { id } = req.params;
+    if (!id) {
+        return res.status(400).send({ message: "Event ID is required." });
+    }
+    try {
+        const event = await Event.findByIdAndDelete(id);
+        if (!event) {
+            return res.status(404).send({ message: "Event not found." });
+        }
+        res.status(200).send({ message: "Event deleted successfully." });
+    } catch (error) {
+        res.status(500).send({ message: "Server error." });
+    }
+}

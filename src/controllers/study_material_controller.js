@@ -83,3 +83,43 @@ exports.updateStudyMaterial = async (req, res) => {
         res.status(500).send({ message: "Server error." });
     }
 }
+
+exports.getAllStudyMaterials = async (req, res) => {
+    try {
+        const studyMaterials = await StudyMaterial.find()
+            .populate('subject')
+            .populate('uploadedBy', '-password')
+            .sort({ uploadDate: -1 });
+        res.status(200).send({ studyMaterials });
+    } catch (error) {
+        res.status(500).send({ message: "Server error." });
+    }
+}
+
+exports.deleteAllStudyMaterials = async (req, res) => {
+    try {
+        await StudyMaterial.deleteMany({});
+        res.status(200).send({ message: "All study materials deleted successfully." });
+    } catch (error) {
+        res.status(500).send({ message: "Server error." });
+    }
+}
+
+// not sure this should even exists
+exports.deleteStudyMaterial = async (req, res) => {
+    const { id } = req.params;
+    if (!id) {
+        return res.status(400).send({ message: "Study Material ID is required." });
+    }
+    try {
+        const studyMaterial = await StudyMaterial.findByIdAndDelete(id);
+        if (!studyMaterial) {
+            return res.status(404).send({ message: "Study Material not found." });
+        }
+        // Note: You might want to add file deletion logic here for the actual file
+        res.status(200).send({ message: "Study Material deleted successfully." });
+    } catch (error) {
+        res.status(500).send({ message: "Server error." });
+    }
+}
+

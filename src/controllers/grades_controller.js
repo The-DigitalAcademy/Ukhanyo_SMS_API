@@ -90,3 +90,41 @@ exports.updateGrade = async (req, res) => {
         res.status(500).send({ message: "Server error." });
     }
 }
+
+exports.getAllGrades = async (req, res) => {
+    try {
+        const grades = await Grade.find()
+            .populate('student', '-password')
+            .populate('subject')
+            .populate('recordedBy', '-password')
+            .sort({ date: -1 });
+        res.status(200).send({ grades });
+    } catch (error) {
+        res.status(500).send({ message: "Server error." });
+    }
+}
+
+exports.deleteAllGrades = async (req, res) => {
+    try {
+        await Grade.deleteMany({});
+        res.status(200).send({ message: "All grades deleted successfully." });
+    } catch (error) {
+        res.status(500).send({ message: "Server error." });
+    }
+}
+
+exports.deleteGrade = async (req, res) => {
+    const { id } = req.params;
+    if (!id) {
+        return res.status(400).send({ message: "Grade ID is required." });
+    }
+    try {
+        const grade = await Grade.findByIdAndDelete(id);
+        if (!grade) {
+            return res.status(404).send({ message: "Grade not found." });
+        }
+        res.status(200).send({ message: "Grade deleted successfully." });
+    } catch (error) {
+        res.status(500).send({ message: "Server error." });
+    }
+}
