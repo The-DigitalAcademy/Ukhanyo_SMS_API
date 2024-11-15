@@ -14,5 +14,6 @@ router.put("/update/:id", teacherController.updateTeacherDetails);
 
 router.delete("/:id", teacherController.removeTeacher); 
 
+router.get('/students/:id', teacherController.getTeacherStudents)
 
 module.exports = router;

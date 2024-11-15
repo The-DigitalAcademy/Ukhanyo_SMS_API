@@ -2,6 +2,8 @@ const Teacher = require('../models/teacher');
 const Course = require('../models/course');
 const User = require('../models/user_model');
 const Subject = require('../models/subject');
+const Student = require('../models/student');
+const student = require('../models/student');
 
 
 exports.createTeacher = async (req, res) => {
@@ -115,5 +117,19 @@ exports.removeTeacher = async (req, res)=>{
         res.status(200).json({ message: 'Teacher deleted' });
     } catch (error) {
         res.status(500).json({ message: 'Error deleting teacher', error: err.message });
+    }
+}
+
+exports.getTeacherStudents = async (req, res)=>{
+    try {
+        const teacherId = req.params.id
+        const teacher = await Teacher.findById(teacherId)
+        console.log([...teacher.classes])
+        const students = await Student.find({enrolledClasses: { "$in" : [...teacher.classes]} }).populate("enrolledClasses")
+        if(!students) return res.status(404).json({message: "Could not find students for this teacher"})
+
+        res.status(200).json(students)
+    } catch (error) {
+        
     }
 }

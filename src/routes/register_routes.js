@@ -16,4 +16,6 @@ router.put('/update/:id', registerController.updateRegister);
 
 router.delete('/:id', registerController.deleteRegister);
 
+
+
 module.exports = router;
