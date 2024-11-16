@@ -26,6 +26,7 @@ exports.addGrade = async (req, res) => {
         });
 
         await newGrade.save();
+            
 
         res.status(201).json(newGrade);
     } catch (err) {
@@ -41,6 +42,7 @@ exports.getCourseGrades = async (req, res) => {
             path: 'student', 
             populate: ('user')
         });
+
         res.status(200).json(grades);
     } catch (err) {
         res.status(500).json({ message: 'Error fetching grades', error: err.message });

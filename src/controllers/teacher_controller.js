@@ -3,7 +3,7 @@ const Course = require('../models/course');
 const User = require('../models/user_model');
 const Subject = require('../models/subject');
 const Student = require('../models/student');
-const student = require('../models/student');
+const Grades =require('../models/grades')
 
 
 exports.createTeacher = async (req, res) => {
@@ -125,11 +125,50 @@ exports.getTeacherStudents = async (req, res)=>{
         const teacherId = req.params.id
         const teacher = await Teacher.findById(teacherId)
         console.log([...teacher.classes])
-        const students = await Student.find({enrolledClasses: { "$in" : [...teacher.classes]} }).populate("enrolledClasses")
+        const students = await Student.find({enrolledClasses: { "$in" : [...teacher.classes]} })
         if(!students) return res.status(404).json({message: "Could not find students for this teacher"})
 
-        res.status(200).json(students)
-    } catch (error) {
+        const studentArr = []
+
+        for(const student of students){
+            const studentGrades = await Grades.findOne({student: student.id })
+            studentArr.push(studentGrades)
+            console.log(studentGrades)
+        }
+       
+        res.status(200).json(studentArr)
         
+        
+    } catch (error) {
+        res.status(500).send("Some error ocurred while trying to get student: ", error)
     }
 }
+
+exports.getStudentsAndGradesForTeacher = async (req, res) => {
+    try {
+      const teacherId = req.params.id;
+  
+      const teacher = await Teacher.findById(teacherId)
+        .populate({
+          path: 'classes',
+          populate: {
+            path: 'students',
+            populate: {
+              path: 'grades'
+            }
+          }
+        });
+        console.log(teacher)
+      if (!teacher) {
+        return res.status(404).json({ message: "Could not find students for this teacher" });
+      }
+  
+      const students = teacher.classes.flatMap(c => c.students);
+      console.log(students)
+  
+      res.status(200).json(students);
+    } catch (error) {
+      console.error(error); // Log the actual error for debugging
+      res.status(500).json({ message: "Error fetching students and grades" });
+    }
+  };
