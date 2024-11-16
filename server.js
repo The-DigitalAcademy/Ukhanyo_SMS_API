@@ -13,7 +13,7 @@ const subjectRoute = require('./src/routes/subject_routes')
 const announcementRoute = require('./src/routes/announcement_routes')
 const gradeRoutes = require('./src/routes/grade_routes')
 const registerRoutes = require('./src/routes/register_routes')
-
+const eventRoutes = require('./src/routes/event_routes')
 
 app.use(cors())
 app.use(express.json())
@@ -52,6 +52,8 @@ app.use('/api/service_req', service_request)
 app.use('/api/announcement', announcementRoute)
 app.use('/api/grade', gradeRoutes)
 app.use('/api/register', registerRoutes)
+app.use('/api/event', eventRoutes)
+
 
 
 

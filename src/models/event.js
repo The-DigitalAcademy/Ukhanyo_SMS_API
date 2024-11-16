@@ -9,6 +9,7 @@ const eventSchema = new Schema({
     createdBy: {type: Schema.Types.ObjectId, ref: 'User', required: true},
     start: {type: String},
     end: {type: String},
+    type: {type: String}
 }, {timestamps: true});
 
 eventSchema.method("toJSON", function() {
