@@ -41,7 +41,7 @@ app.use((_req, res, next) => {
 
 app.get("/", (_req, res) => {
 
-  res.send(`The Api is running 😀 ${connectionString.url}` );
+  res.send(`The Api is running 😀` );
 });
 
 app.use('/api/pastpaper', pastPaperRoutes);
