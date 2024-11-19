@@ -1,0 +1,12 @@
+{
+    "version": 2,
+    "name": "blue_rain_api",
+    "builds": [
+       { "src": "./index.js", 
+       "use": "@vercel/node" }
+    ],
+    "routes": [
+       { "src": "/(.*)", 
+       "dest": "/" }
+    ]
+ }
