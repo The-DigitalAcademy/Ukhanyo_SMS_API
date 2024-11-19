@@ -1,12 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const announcementController = require('../controllers/announcementController');
+const announcementController = require('../controllers/announcement_controller');
 
-router.get('/', announcementController.getAllAnnouncements);
+router.get('/all', announcementController.getAllAnnouncements);
 
 router.get('/:id', announcementController.getAnnouncementById);
 
-router.post('/', announcementController.createAnnouncement);
+router.get('/teacher/:id', announcementController.getAnnouncementsByTeacher)
+
+router.get('/student/:id', announcementController.getAnnouncementsBySubject)
+
+
+router.post('/add', announcementController.addAnnouncement);
 
 router.put('/:id', announcementController.updateAnnouncement);
 

@@ -1,10 +1,10 @@
-const User = require("../models/admin");
+const User = require("../models/user_model");
 
 exports.createUser = async (req, res) => {
   try {
     const newUser = new User(req.body);
     const savedUser = await newUser.save();
-    res.json(savedUser);
+    res.json({message:"Created user succeffully", savedUser});
   } catch (error) {
     res.json({ message: error.message });
   }
@@ -23,12 +23,14 @@ exports.getAllUsers = async (req, res) => {
 
 exports.getOneUser = async (req, res) => {
   try {
-    const { id } = req.params;
-    const user = await User.findById(id);
+    const { uuid } = req.params;
+    const user = await User.findOne({uuid});
     if (!user) {
+      user.dob = user.dob.toISOString().split('T')[0];
+
       return res.status(404).send({ message: "User not found" });
     }
-    res.json(user);
+    res.status(200).json({message:"Succefully retrieved user", user});
   } catch (error) {
     res
       .status(500)
@@ -38,8 +40,15 @@ exports.getOneUser = async (req, res) => {
 
 exports.updateUsers = async (req, res) => {
   try {
-    const updatedUser = await User.updateOne({ _id: req.params.id });
-    res.json(updatedUser);
+    if(req.params.id === undefined){
+      return res.status(404).json({message: "Could not get id"})
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(req.params.id,req.body,{new: true} );
+      return res.status(200).json(updatedUser);
+    
+    
+    
   } catch (error) {
     res.json({ message: error.message });
   }
@@ -59,7 +68,7 @@ exports.deleteAllUsers = async (req, res) => {
 exports.deleteUsers = async (req, res) => {
   try {
     const removedUser = await User.deleteOne({ _id: req.params.id });
-    res.json(removedUser);
+    res.status(200).json(removedUser);
   } catch (error) {
     res.json({ message: error.message });
   }

@@ -1,10 +1,31 @@
-const Student = require("../models/student_model");
+const Student = require("../models/student");
+const Subject = require("../models/subject");
+const User = require('../models/user_model')
 
 exports.createStudent = async (req, res) => {
-  try {
-    const newStudent = new Student(req.body);
+    const {uuid, subjects}= req.body 
+    const subjectArray = await Subject.find({ "subjectCode" : { "$in" : subjects } })
+    let subjectIDarr = [];
+
+
+   try {
+    const user = await User.findOne({uuid})
+    console.log(user)
+
+    if(!user){
+      return res.status(404).json({message: "Could not find user"})
+    }
+
+    if(subjectArray.length > 0){
+      for(const element of subjectArray) {
+      subjectIDarr.push(element.id)
+    }
+    }
+    
+    const newStudent = new Student({user: user.id, enrolledClasses: subjectIDarr});
     const savedStudent = await newStudent.save();
-    res.json(savedStudent);
+
+    res.status(200).json(savedStudent);
   } catch (error) {
     res.json({ message: error.message });
   }
@@ -12,23 +33,25 @@ exports.createStudent = async (req, res) => {
 
 exports.getAllStudents = async (req, res) => {
   try {
-    const students = await Student.find();
-    res.send(students);
+    const students = await Student.find().populate('user').populate('enrolledClasses');
+    res.status(200).send(students);
   } catch (error) {
     res
       .status(500)
-      .send({ message: "Could not fetch student", error: error.message });
+      .send({ message: "Could not fetch students", error: error.message });
   }
 };
+
 
 exports.getOneStudent = async (req, res) => {
   try {
-    const { id } = req.params;
-    const student = await Student.findById(id);
+    const id = req.params.id;
+    const student = await Student.findById(id).populate("user").populate({path:'enrolledClasses', select: "-students"});
     if (!student) {
       return res.status(404).send({ message: "Student not found" });
     }
-    res.json(student);
+    student.dob = student.user.dob.toISOString().split('T')[0];
+    res.status(200).json(student);
   } catch (error) {
     res
       .status(500)
@@ -36,10 +59,21 @@ exports.getOneStudent = async (req, res) => {
   }
 };
 
-exports.updateStudents = async (req, res) => {
+exports.updateStudentClasses = async (req, res) => {
   try {
-    const updatedStudent = await Student.updateOne({ _id: req.params.id });
-    res.json(updatedStudent);
+    const subjectArray = await Subject.find({ "subjectCode" : { "$in" : req.body.subjects } })
+    let subjectIDarr = [];
+
+    for(const element of subjectArray) {
+      subjectIDarr.push(element.id)
+    }
+
+    const updatedStudent = await Student.findByIdAndUpdate(
+      req.params.id,
+      {enrolledClasses: subjectIDarr}, 
+      {new: true}
+    );
+    res.status(200).json(updatedStudent);
   } catch (error) {
     res.json({ message: error.message });
   }

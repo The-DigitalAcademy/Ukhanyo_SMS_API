@@ -1,16 +1,24 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const {connectionString} = require('./src/config/db_config');
+const connectionString = require('./src/config/db_config');
 const port = 3300;
 const app = express();
 const pastPaperRoutes = require('./src/routes/past_paper_routes');
 const adminRoutes = require('./src/routes/admin_routes');
 const studentRoutes = require('./src/routes/student_routes')
-const teacherRoutes = require('./src/routes/teacher_routes')
-
+const teacherRoutes = require('./src/routes/teacher_routes');
+const service_request = require("./src/routes/service_req");
+const subjectRoute = require('./src/routes/subject_routes')
+const announcementRoute = require('./src/routes/announcement_routes')
+const gradeRoutes = require('./src/routes/grade_routes')
+const registerRoutes = require('./src/routes/register_routes')
+const eventRoutes = require('./src/routes/event_routes')
 
 app.use(cors())
+app.use(express.json())
+app.use(express.urlencoded())
+
 app.use((_req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, x-access-token');
@@ -18,28 +26,39 @@ app.use((_req, res, next) => {
   next();
 })
 
-app.use(express.json());
 
-// console.log(connectionString.url)
 
-mongoose.connect(connectionString.url);
+mongoose.connect(connectionString.url)
+  .then(()=>{
+    console.log("Connected to DB successfully")
+  })
+  .catch((err)=> console.log("Could not connect to DB due to the following ", err.errmsg))
 
-const db = mongoose.connection;
 
-db.on("error", console.error.bind(console, "MongoDB connection error:"));
-db.once("open", () => {
-  console.log("Connected to MongoDB");
-});
+
+
+
 
 
 app.get("/", (_req, res) => {
   res.send("The Api is running!");
 });
 
-app.use('/api', pastPaperRoutes);
-app.use('/api', adminRoutes);
-app.use('/api', studentRoutes);
-app.use('/api', teacherRoutes);
+app.use('/api/pastpaper', pastPaperRoutes);
+app.use('/api/subject', subjectRoute);
+app.use('/api/admin', adminRoutes);
+app.use('/api/student', studentRoutes);
+app.use('/api/teacher', teacherRoutes);
+app.use('/api/service_req', service_request)
+app.use('/api/announcement', announcementRoute)
+app.use('/api/grade', gradeRoutes)
+app.use('/api/register', registerRoutes)
+app.use('/api/event', eventRoutes)
+
+
+
+
+
 
 
 app.listen(port, () => {

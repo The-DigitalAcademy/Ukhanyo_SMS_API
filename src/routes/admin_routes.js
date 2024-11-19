@@ -4,13 +4,13 @@ const adminController = require("../controllers/admin_controller");
 
 router.post("/add", adminController.createUser);
 
-router.get("/get-all", adminController.getAllUsers);
+router.get("/users", adminController.getAllUsers);
 
-router.get("/get-one/:id", adminController.getOneUser);
+router.get("/user/:uuid", adminController.getOneUser);
 
-router.delete("/delete-all", adminController.deleteAllUsers);
+router.delete("/users", adminController.deleteAllUsers);
 
-router.delete("/delete-one/:id", adminController.deleteUsers);
+router.delete("/user/:id", adminController.deleteUsers);
 
 router.put("/update/:id", adminController.updateUsers);
 
