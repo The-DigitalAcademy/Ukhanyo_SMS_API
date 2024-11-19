@@ -33,8 +33,8 @@ exports.createStudent = async (req, res) => {
 
 exports.getAllStudents = async (req, res) => {
   try {
-    const students = await Student.find().populate('user').populate('enrolledClasses');
-    return res.status(200).send(students);
+    // const students = await Student.find().populate('user').populate('enrolledClasses');
+    return res.status(200).send("students");
   } catch (error) {
     return res
       .status(500)
