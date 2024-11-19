@@ -40,10 +40,9 @@ mongoose.connect(connectionString.url)
 
 
 
-
 app.get("/", (_req, res) => {
   
-  res.send("The Api is running 😀",connectionString.url );
+  res.send(`The Api is running 😀 ${connectionString.url}` );
 });
 
 app.use('/api/pastpaper', pastPaperRoutes);
