@@ -28,21 +28,14 @@ app.use((_req, res, next) => {
 })
 
 
-async function connection(req, res){
+
  
-  await mongoose.connect("mongodb+srv://buhle3857:Td7L38iuo0BocJhG@ukhanyo.cdshb.mongodb.net/?retryWrites=true&w=majority&appName=Ukhanyo")
+  mongoose.connect(connectionString.url)
   .then(()=>{ 
-    console.log("hello")
     console.log("Connected to DB successfully")
-    res.json("heita"+ connectionString.url )
+   
   })
   .catch((err)=> console.log("Could not connect to DB due to the following ", err.errmsg))
-
-}
-connection()
-
-
-
 
 
 
