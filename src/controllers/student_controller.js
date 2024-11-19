@@ -34,9 +34,9 @@ exports.createStudent = async (req, res) => {
 exports.getAllStudents = async (req, res) => {
   try {
     const students = await Student.find().populate('user').populate('enrolledClasses');
-    res.status(200).send(students);
+    return res.status(200).send(students);
   } catch (error) {
-    res
+    return res
       .status(500)
       .send({ message: "Could not fetch students", error: error.message });
   }
