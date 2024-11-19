@@ -15,10 +15,11 @@ const gradeRoutes = require('./src/routes/grade_routes')
 const registerRoutes = require('./src/routes/register_routes')
 const eventRoutes = require('./src/routes/event_routes')
 
-app.use(cors())
+
 app.use(express.json())
 app.use(express.urlencoded())
 
+app.use(cors())
 app.use((_req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, x-access-token');
