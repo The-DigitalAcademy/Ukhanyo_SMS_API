@@ -28,12 +28,18 @@ app.use((_req, res, next) => {
 })
 
 
-
-mongoose.connect(connectionString.url)
-  .then(()=>{
+async function connection(req, res){
+ 
+  await mongoose.connect(connectionString.url)
+  .then(()=>{ 
+    console.log("hello")
     console.log("Connected to DB successfully")
+    res.json("heita"+ connectionString.url )
   })
   .catch((err)=> console.log("Could not connect to DB due to the following ", err.errmsg))
+
+}
+connection()
 
 
 
@@ -41,7 +47,7 @@ mongoose.connect(connectionString.url)
 
 
 app.get("/", (_req, res) => {
-  
+
   res.send(`The Api is running 😀 ${connectionString.url}` );
 });
 
