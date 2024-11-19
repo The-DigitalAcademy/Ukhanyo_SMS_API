@@ -30,7 +30,7 @@ app.use((_req, res, next) => {
 
 async function connection(req, res){
  
-  await mongoose.connect(connectionString.url)
+  await mongoose.connect("mongodb+srv://buhle3857:Td7L38iuo0BocJhG@ukhanyo.cdshb.mongodb.net/?retryWrites=true&w=majority&appName=Ukhanyo")
   .then(()=>{ 
     console.log("hello")
     console.log("Connected to DB successfully")
