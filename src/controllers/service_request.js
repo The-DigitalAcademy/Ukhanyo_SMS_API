@@ -5,6 +5,7 @@ const Student = require('../models/student')
 exports.createServiceRequest = async (req, res) => {
     try {
         const { userId, type, description } = req.body;
+        console.log(req.body)
 
         const user = await User.findById(userId);
         if (!user) return res.status(404).json({ message: 'User not found' });
@@ -20,7 +21,7 @@ exports.createServiceRequest = async (req, res) => {
         await serviceRequest.save();
         res.status(201).json(serviceRequest);
     } catch (err) {
-        res.status(500).json({ message: 'Error creating service request', error: err.message });
+        res.status(500).json({ message: 'Error creating service request', error: err.message, body: req.body });
     }
 }
 
