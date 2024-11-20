@@ -135,9 +135,9 @@ exports.updateSudentGrade = async (req, res) => {
 
 exports.deleteGrade = async (req, res) => {
     try {
-        const { gradeId } = req.params;
+        const id = req.params.id;
 
-        const deletedGrade = await Grade.findByIdAndDelete(gradeId);
+        const deletedGrade = await Grade.findByIdAndDelete(id);
         if (!deletedGrade) return res.status(404).json({ message: 'Grade not found' });
 
         res.status(200).json({ message: 'Grade deleted' });
