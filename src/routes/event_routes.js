@@ -9,6 +9,9 @@ router.get('/:id', eventController.getEventById);
 
 router.post('/', eventController.createEvent);
 
+router.post('/e', eventController.createE);
+
+
 
 router.put('/:id', eventController.updateEvent);
 

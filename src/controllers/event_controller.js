@@ -24,6 +24,24 @@ exports.createEvent = async (req, res) => {
     }
 }
 
+exports.createE = async (req, res) => {
+    try {
+        const event = new Event({
+
+            ...req.body
+        });
+        console.log(event)
+        await event.save();
+
+        // subject.events.push(event.id);
+        // await subject.save();
+
+        res.status(201).json(event);
+    } catch (err) {
+        res.status(500).json({ message: 'Error creating event', error: err.message });
+    }
+}
+
 exports.geAllEvents = async (req, res)=>{
     try {
         const events = await Event.find().populate('class').populate('createdBy')
