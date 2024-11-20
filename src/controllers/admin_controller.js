@@ -10,6 +10,30 @@ exports.createUser = async (req, res) => {
   }
 };
 
+
+exports.bulkCreateUsers = async (req, res) => {
+  try {
+    const users = req.body;
+
+    if (!Array.isArray(users) || users.length === 0) {
+      return res.status(400).json({ message: "No users data provided" });
+    }
+
+    const invalidUsers = users.filter(user => !user.name || !user.email || !user.id_number);
+    if (invalidUsers.length > 0) {
+      return res.status(400).json({ message: "Some users have missing required fields", invalidUsers });
+    }
+
+    const createdUsers = await User.insertMany(users);
+    res.status(201).json({
+      message: `${createdUsers.length} users successfully created.`,
+      createdUsers,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error during bulk user creation", error: error.message });
+  }
+};
+
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.find();

@@ -54,6 +54,8 @@ app.use('/api/announcement', announcementRoute)
 app.use('/api/grade', gradeRoutes)
 app.use('/api/register', registerRoutes)
 app.use('/api/event', eventRoutes)
+app.use('/api/pastpaper', eventRoutes)
+
 
 
 

@@ -3,6 +3,7 @@ const router = express.Router();
 const adminController = require("../controllers/admin_controller");
 
 router.post("/add", adminController.createUser);
+router.post("/many", adminController.bulkCreateUsers)
 
 router.get("/users", adminController.getAllUsers);
 
