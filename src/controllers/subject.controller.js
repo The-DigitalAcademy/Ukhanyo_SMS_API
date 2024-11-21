@@ -50,7 +50,7 @@ exports.getSubjectById = async (req, res) => {
 
 exports.getSubjectStudents = async (req, res) => {
     try {
-        const { courseId } = req.params;
+        const courseId = req.params.id;
         const course = await Subject.findById(courseId).populate('students');
         if (!course) return res.status(404).json({ message: 'Course not found' });
 
@@ -60,13 +60,26 @@ exports.getSubjectStudents = async (req, res) => {
     }
 }
 
+exports.updateSubject = async (req, res)=>{
+    try {
+        const courseId = req.params.id;
+        const subject = await Subject.findByIdAndUpdate(courseId,{...req.body},{new: true} ).populate('students');
+        if (!subject) return res.status(404).json({ message: 'Subject not found'});
+
+        res.status(200).json(subject);
+    } catch (error) {
+        res.status(500).json({ message: 'Error trying to update subject', error: err.message });
+
+    }
+}
+
 
 exports.addStudyMaterial = async (req, res) => {
     try {
         const { courseId, title, description, fileUrl } = req.body;
         const teacherId = req.user._id;
 
-        const course = await Course.findById(courseId);
+        const course = await Subject.findById(courseId);
         if (!course) return res.status(404).json({ message: 'Course not found' });
 
         const studyMaterial = new StudyMaterial({

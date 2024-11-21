@@ -11,6 +11,7 @@ const gradeSchema = new Schema({
     mark: { type: Number, required: true },
     maxMark: { type: Number, required: true },
     teacherId: {type: Schema.Types.ObjectId, ref: 'Student', required: true },
+    date: {type: Date, default: Date.now.toString()},
     comment: { type: String, required: true },
 });
 gradeSchema.method("toJSON", function() {

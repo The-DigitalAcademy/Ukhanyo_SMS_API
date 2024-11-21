@@ -4,8 +4,9 @@ const gradeController = require('../controllers/grades');
 
 router.get('/all', gradeController.getCourseGrades);
 
-router.get('/student_grades/:id', gradeController.getAllStudentGrades);
-// router.get('/subject_grades/:id', gradeController.getStudentGrades);
+router.get('/student/:id', gradeController.getAllStudentGrades);
+
+router.get('/subject_grades/:id', gradeController.getStudentGrades);
 
 router.post('/add', gradeController.addGrade);
 

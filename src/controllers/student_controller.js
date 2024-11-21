@@ -32,7 +32,7 @@ exports.createStudent = async (req, res) => {
 exports.getAllStudents = async (req, res) => {
   try {
     const students = await Student.find().populate('user').populate('enrolledClasses');
-    res.send(students);
+    res.status(200).send(students);
   } catch (error) {
     res
       .status(500)
@@ -43,7 +43,7 @@ exports.getAllStudents = async (req, res) => {
 
 exports.getOneStudent = async (req, res) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id;
     const student = await Student.findById(id).populate("user").populate({path:'enrolledClasses', select: "-students"});
     if (!student) {
       return res.status(404).send({ message: "Student not found" });

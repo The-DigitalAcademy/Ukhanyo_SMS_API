@@ -1,6 +1,6 @@
 const ServiceRequest = require('../models/service_request');
 const User = require('../models/user_model');
-
+const Student = require('../models/student')
 
 exports.createServiceRequest = async (req, res) => {
     try {
@@ -24,6 +24,22 @@ exports.createServiceRequest = async (req, res) => {
     }
 }
 
+exports.getServiceReqByStudentId = async (req, res)=>{
+    try{
+        const id = req.params.id
+        if(!id) return res.json({message: "ID is not defined"})
+        
+        const user = await User.findById(id)
+        if(!user) return res.status(404).json({message: "Could not find user!"})
+        
+        const request = await ServiceRequest.find({requestedBy: user._id}).populate("requestedBy")
+        if(!request) return res.status(404).json({message: "Could not get services request for this student :", user})
+        
+        res.status(200).json(request)
+    }catch(err){
+
+    }
+}
 
 exports.getAllServiceRequests = async (req, res) => {
     try {
@@ -37,7 +53,7 @@ exports.getAllServiceRequests = async (req, res) => {
 
 exports.getServiceRequestById = async (req, res) => {
     try {
-        const { requestId } = req.params;
+        const requestId = req.params.id;
         const serviceRequest = await ServiceRequest.findById(requestId).populate('requestedBy');
         if (!serviceRequest) return res.status(404).json({ message: 'Service request not found' });
 
@@ -50,8 +66,11 @@ exports.getServiceRequestById = async (req, res) => {
 
 exports.updateServiceRequestStatus = async (req, res) => {
     try {
-        const { requestId } = req.params;
+        const requestId  = req.params.id;
+        if(!requestId) return res.json("ID Field cannot be empty!!!")
+
         const { status } = req.body;
+        if(!status) return res.json("Fields cannot be empty")
 
         const updatedRequest = await ServiceRequest.findByIdAndUpdate(
             requestId,
@@ -70,6 +89,7 @@ exports.updateServiceRequestStatus = async (req, res) => {
 exports.deleteServiceRequest = async (req, res) => {
     try {
         const requestId = req.params.id;
+        if(!requestId) return res.json("ID Field cannot be empty!!!")
 
         const deletedRequest = await ServiceRequest.findByIdAndDelete(requestId);
         if (!deletedRequest) return res.status(404).json({ message: 'Service request not found' });

@@ -1,6 +1,6 @@
 const Announcement = require('../models/announcement');
 const Subject = require('../models/subject');
-
+const Student = require('../models/student')
 
 
 exports.addAnnouncement = async (req, res)=>{
@@ -68,6 +68,22 @@ exports.deleteAnnouncement = async (req, res) => {
         res.status(500).json({ message: 'Error deleting announcement', error: err.message });
     }
 }
+exports.getAnnouncementsBySubject= async (req, res)=>{
+  try{
+    const studentId = req.params.id
+    
+    const student = await Student.findById(studentId)
+    if(!student) return res.status(404).json({message: "Could not get student"})
+    console.log(student.enrolledClasses)
+    const announcements = await Announcement.find({class:{"$in":[...student.enrolledClasses]}})
+    if(!announcements) return res.status(404).json({message: "Could not get Announcements"})
+    console.log(announcements)
+    res.status(200).json(announcements)
+  }catch(err){
+    res.status(500).json({message: "An error occur while trying to get student announcements", error: err})
+  }
+}
+
 
 exports.getAllAnnouncements = async (req, res) => {
   try {

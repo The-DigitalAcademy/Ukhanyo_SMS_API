@@ -8,6 +8,6 @@ router.get("/all", subjectController.getAllSubjects);
 
 router.get("/one/:id", subjectController.getSubjectById);
 
-// router.put("/update/:id", teacherController.); 
+router.put("/one/:id", subjectController.updateSubject); 
 
 module.exports = router;

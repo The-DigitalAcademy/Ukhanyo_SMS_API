@@ -26,6 +26,7 @@ exports.addGrade = async (req, res) => {
         });
 
         await newGrade.save();
+            
 
         res.status(201).json(newGrade);
     } catch (err) {
@@ -37,7 +38,11 @@ exports.addGrade = async (req, res) => {
 exports.getCourseGrades = async (req, res) => {
     try {
         const { courseId } = req.params;
-        const grades = await Grade.find({ class: courseId }).populate('student');
+        const grades = await Grade.find({ class: courseId }).populate('student').populate({
+            path: 'student', 
+            populate: ('user')
+        });
+
         res.status(200).json(grades);
     } catch (err) {
         res.status(500).json({ message: 'Error fetching grades', error: err.message });
@@ -51,7 +56,10 @@ exports.getAllStudentGrades = async (req, res) => {
         if(!student) return res.status(404).json({message: "Could not find student!!!"});
         console.log(student)
 
-        const grades = await Grade.find({student: student.id}).populate('student').populate('subject');
+        const grades = await Grade.find({student: student.id}).populate('subject').populate({
+            path: 'student', 
+            populate: ('user')
+        });
         
         if(grades.length==0) return res.status(404).json({message: `Could not get grades for this student: ${student.user.name}`, })
 
@@ -77,7 +85,13 @@ exports.getStudentGradesForTeacher = async (req, res) => {
     try {
         const teacherId = req.params.id;
 
-        const grades = await Grade.find({teacherId}).populate('subject').populate('teacherId');
+        const grades = await Grade.find({teacherId})
+                                .populate('subject')
+                                .populate('teacherId')
+                                .populate({
+                                    path: 'student', 
+                                    populate: ('user')
+                                })
         if(!grades){
             return res.status(404).json({message: "Could not find requested grades"})
         }

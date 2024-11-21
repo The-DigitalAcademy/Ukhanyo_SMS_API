@@ -8,12 +8,14 @@ router.get('/:id', registerController.getRegisterById);
 
 router.get('/subject/:id', registerController.getRegistersBySubject);
 
-router.get('/teacher/:id', registerController.getRegistersByTeacher);
+// router.get('/teacher/:id', registerController.getRegistersByTeacher);
 
 router.post('/add', registerController.createRegister);
 
 router.put('/update/:id', registerController.updateRegister);
 
 router.delete('/:id', registerController.deleteRegister);
+
+
 
 module.exports = router;
