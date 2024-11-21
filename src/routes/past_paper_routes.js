@@ -2,15 +2,15 @@ const express = require('express');
 const router = express.Router();
 const pastPaperController = require('../controllers/past_paper_controller');
 
-router.post('/', pastPaperController.createPaper);
+router.post('/one', pastPaperController.createPaper);
 
-router.get('/', pastPaperController.getAllPapers);
+router.get('/all', pastPaperController.getAllPapers);
 
-router.get('/:id', pastPaperController.getPaperById);
+router.get('/one/:id', pastPaperController.getPaperById);
 
-router.put('/:id', pastPaperController.updatePaper);
+router.put('/one/:id', pastPaperController.updatePaper);
 
-router.delete('/:id', pastPaperController.deletePaper);
+router.delete('/one/:id', pastPaperController.deletePaper);
 
 router.delete('/all', pastPaperController.deleteAllPapers);
 

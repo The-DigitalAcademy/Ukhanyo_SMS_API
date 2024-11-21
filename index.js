@@ -17,6 +17,7 @@ const eventRoutes = require('./src/routes/event_routes')
 
 app.use(cors())
 app.use(express.json())
+app.use(express.urlencoded())
 
 app.use((_req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
