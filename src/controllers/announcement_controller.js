@@ -21,7 +21,8 @@ exports.addAnnouncement = async (req, res)=>{
         res.status(201).json(announcement);
     
   } catch (error) {
-    res.status(500).json({ message: 'Error creating announcement', error: err.message });
+    console.log(error);
+    res.status(500).json({ message: 'Error creating announcement', error: error.message });
 
   }
 }
@@ -90,6 +91,7 @@ exports.getAllAnnouncements = async (req, res) => {
     const announcements = await Announcement.find().populate('class').populate('createdBy')
     res.status(200).json(announcements);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: error.message });
   }
 };
