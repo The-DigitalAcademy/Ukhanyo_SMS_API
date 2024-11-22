@@ -30,6 +30,8 @@ exports.bulkCreateUsers = async (req, res) => {
       createdUsers,
     });
   } catch (error) {
+    console.log(error);
+    
     res.status(500).json({ message: "Error during bulk user creation", error: error.message });
   }
 };
