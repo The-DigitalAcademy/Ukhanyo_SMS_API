@@ -10,6 +10,28 @@ exports.createUser = async (req, res) => {
   }
 };
 
+exports.createMultipleUsers = async (req, res) => {
+  try {
+    // Expecting an array of users in the request body
+    const { users } = req.body;
+    users
+
+    if (!Array.isArray(users)) {
+      return res.status(400).json({ message: "Invalid input. Expected an array of users." });
+    }
+
+    const createdUsers = await User.insertMany(users);
+
+    res.status(201).json({
+      message: "Successfully created users",
+      createdUsers,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error creating users", error: error.message });
+  }
+};
+
+
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.find();
