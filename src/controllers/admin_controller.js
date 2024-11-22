@@ -14,7 +14,6 @@ exports.createMultipleUsers = async (req, res) => {
   try {
     // Expecting an array of users in the request body
     const { users } = req.body;
-    users
 
     if (!Array.isArray(users)) {
       return res.status(400).json({ message: "Invalid input. Expected an array of users." });
